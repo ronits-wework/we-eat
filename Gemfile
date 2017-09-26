@@ -23,6 +23,12 @@ gem 'webpacker'
 
 gem 'pg'
 
+gem 'rspec-rails'
+gem 'spring-commands-rspec'
+gem 'factory_girl_rails'
+gem 'shoulda-matchers'
+gem 'faker', :require => nil
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
