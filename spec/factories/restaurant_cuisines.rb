@@ -11,7 +11,7 @@
 
 FactoryGirl.define do
   factory :restaurant_cuisine do
-    restaurant nil
-    cuisine_type nil
+    association :restaurant, factory: :restaurant
+    association :cuisine_type, factory: :cuisine_type
   end
 end
