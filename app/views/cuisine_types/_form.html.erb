@@ -1,0 +1,22 @@
+<%= form_with(model: cuisine_type, local: true) do |form| %>
+  <% if cuisine_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cuisine_type.errors.count, "error") %> prohibited this cuisine_type from being saved:</h2>
+
+      <ul>
+      <% cuisine_type.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :cuisine %>
+    <%= form.text_field :cuisine, id: :cuisine_type_cuisine %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
