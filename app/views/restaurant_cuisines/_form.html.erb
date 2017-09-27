@@ -1,0 +1,17 @@
+<%= form_with(model: restaurant_cuisine, local: true) do |form| %>
+  <% if restaurant_cuisine.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(restaurant_cuisine.errors.count, "error") %> prohibited this restaurant_cuisine from being saved:</h2>
+
+      <ul>
+      <% restaurant_cuisine.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
