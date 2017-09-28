@@ -28,7 +28,6 @@ class ReviewsController < ApplicationController
 
     respond_to do |format|
       if @review.save
-        @review.add_rating_to_restaurant!
         format.html { redirect_to @review, notice: 'Review was successfully created.' }
         format.json { render :show, status: :created, location: @review }
       else
@@ -44,7 +43,6 @@ class ReviewsController < ApplicationController
     respond_to do |format|
       old_rating = @review.rating
       if @review.update(review_params)
-        @review.update_rating_to_restaurant!(old_rating)
         format.html { redirect_to @review, notice: 'Review was successfully updated.' }
         format.json { render :show, status: :ok, location: @review }
       else
@@ -58,7 +56,6 @@ class ReviewsController < ApplicationController
   # DELETE /reviews/1.json
   def destroy
     @review.destroy
-    @review.delete_rating_from_restaurant!
     respond_to do |format|
       format.html { redirect_to reviews_url, notice: 'Review was successfully destroyed.' }
       format.json { head :no_content }

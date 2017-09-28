@@ -1,6 +1,10 @@
 class Review < ApplicationRecord
   belongs_to :restaurant
 
+  after_create :add_rating_to_restaurant!
+  after_update :update_rating_to_restaurant!
+  after_destroy :delete_rating_from_restaurant!
+
   validates :name, :rating, :comment, presence: true
   validates :name, length: { minimum: 2 }
   validates :rating, numericality: { greater_than_or_equal_to: WeEat::MIN_REVIEW_RATING,
@@ -20,8 +24,9 @@ class Review < ApplicationRecord
     restaurant.save!
   end
 
-  def update_rating_to_restaurant!(old_rating)
+  def update_rating_to_restaurant!
     review = self
+    old_rating = review.rating_before_last_save
     if review.rating != old_rating
       restaurant = review.restaurant
       total_ratings = restaurant.reviews.count
