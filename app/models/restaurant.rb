@@ -18,14 +18,17 @@ class Restaurant < ApplicationRecord
   has_many :cuisine_types, through: :restaurant_cuisines
   has_many :reviews
 
-  def self.delivery_times
-    [30, 60, 90, 120]
-  end
-
   validates :name, :address, presence: true
-  validates :speed, inclusion: { in: delivery_times }
+  validates :speed, inclusion: { in: WeEat::DELIVERY_TIMES }
   validates :name, length: { minimum: 2 }
-  validates :rating, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
+  validates :rating, numericality: { greater_than_or_equal_to: WeEat::MIN_REVIEW_RATING,
+                                     less_than_or_equal_to: WeEat::MAX_REVIEW_RATING },
+            allow_nil: true
 
+  def set_rating_in_bounds!
+    if self.rating != nil
+      self.rating = [[self.rating, WeEat::MAX_REVIEW_RATING].min, WeEat::MIN_REVIEW_RATING].max
+    end
+  end
 
 end
