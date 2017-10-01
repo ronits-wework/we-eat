@@ -26,9 +26,7 @@ class Restaurant < ApplicationRecord
             allow_nil: true
 
   def set_rating_in_bounds!
-    if self.rating != nil
-      self.rating = [[self.rating, WeEat::MAX_REVIEW_RATING].min, WeEat::MIN_REVIEW_RATING].max
-    end
+    self.rating = self.rating ? [[self.rating, WeEat::MAX_REVIEW_RATING].min, WeEat::MIN_REVIEW_RATING].max : nil
   end
 
 end
