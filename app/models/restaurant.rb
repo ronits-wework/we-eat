@@ -16,25 +16,17 @@ class Restaurant < ApplicationRecord
 
   has_many :restaurant_cuisines
   has_many :cuisine_types, through: :restaurant_cuisines
-  #before_destroy :ensure_not_referenced_by_any_line_item
-
-  def self.delivery_times
-    [30, 60, 90, 120]
-  end
+  has_many :reviews
 
   validates :name, :address, presence: true
-  validates :speed, inclusion: { in: delivery_times }
+  validates :speed, inclusion: { in: WeEat::DELIVERY_TIMES }, allow_nil: true
   validates :name, length: { minimum: 2 }
-  validates :rating, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
+  validates :rating, numericality: { greater_than_or_equal_to: WeEat::MIN_REVIEW_RATING,
+                                     less_than_or_equal_to: WeEat::MAX_REVIEW_RATING },
+            allow_nil: true
 
-
-  # private
-  ## ensure that there are no line items referencing this product
-  # def ensure_not_referenced_by_any_line_item
-  #   unless line_items.empty?
-  #     errors.add(:base, 'Line Items present')
-  #     throw :abort
-  #   end
-  # end
+  def set_rating_in_bounds!
+    self.rating = self.rating ? [[self.rating, WeEat::MAX_REVIEW_RATING].min, WeEat::MIN_REVIEW_RATING].max : nil
+  end
 
 end

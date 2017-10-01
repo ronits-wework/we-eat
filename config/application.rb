@@ -7,6 +7,11 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module WeEat
+
+  MIN_REVIEW_RATING = 0.0
+  MAX_REVIEW_RATING = 3.0
+  DELIVERY_TIMES = 15.step(120, 15).to_a.freeze
+
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1

@@ -15,8 +15,8 @@
 FactoryGirl.define do
   factory :restaurant do
     name { Faker::Name.title }
-    rating { Faker::Number.between(1, 5) }
-    speed 30
+    rating nil
+    speed { WeEat::DELIVERY_TIMES.sample }
     address { Faker::Address }
   end
 end
