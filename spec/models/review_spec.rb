@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Review, type: :model do
 
   describe "test average rating calculation" do
-    #let!(:review_instance) { FactoryGirl.create(:review) }
     restaurant = FactoryGirl.create(:restaurant)
     i = 0
     reviews_num = rand(50..200)

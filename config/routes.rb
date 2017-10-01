@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'restaurants#index', as: 'restaurant_index'
   resources :reviews
   resources :cuisine_types
   resources :restaurants
