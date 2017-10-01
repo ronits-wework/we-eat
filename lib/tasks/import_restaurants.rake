@@ -9,7 +9,10 @@ namespace :import_restaurants_csv do
       if Restaurant.exists?(name: row[:name])
         next
       end
-      restaurant = Restaurant.create!(name: row[:name], accepts_10bis: row[:'10bis'], address: row[:address])
+      is_kosher = !row[:kosher].nil? ? true : false
+      restaurant = Restaurant.create!(name: row[:name], accepts_10bis: row[:'10bis'], address: row[:address],
+                                      kosher: is_kosher, logo: row[:logo], longitude: row[:longitude],
+                                      latitude: row[:latitude])
       unless CuisineType.exists?(cuisine: row[:cuisine])
         CuisineType.create!(cuisine: row[:cuisine])
       end
