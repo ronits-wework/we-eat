@@ -15,6 +15,7 @@ class ReviewsController < ApplicationController
   # GET /reviews/new
   def new
     @review = Review.new
+    @restaurant_id = nil || params[:restaurant_id]
   end
 
   # GET /reviews/1/edit
@@ -41,7 +42,6 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1.json
   def update
     respond_to do |format|
-      old_rating = @review.rating
       if @review.update(review_params)
         format.html { redirect_to @review, notice: 'Review was successfully updated.' }
         format.json { render :show, status: :ok, location: @review }

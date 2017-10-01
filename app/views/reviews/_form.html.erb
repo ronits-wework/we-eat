@@ -28,7 +28,11 @@
 
   <div class="field">
     <%= form.label :restaurant_id %>
-    <%= form.text_field :restaurant_id, id: :review_restaurant_id %>
+    <% if params[:restaurant_id] != nil %>
+      <%= form.text_field :restaurant_id, id: :review_restaurant_id, :value => params[:restaurant_id], :readonly => true %>
+    <% else %>
+      <%= form.text_field :restaurant_id, id: :review_restaurant_id %>
+    <% end %>
   </div>
 
   <div class="actions">

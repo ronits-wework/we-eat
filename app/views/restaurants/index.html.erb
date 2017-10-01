@@ -22,6 +22,7 @@
         <td><%= restaurant.rating %></td>
         <td><%= restaurant.speed %></td>
         <td><%= restaurant.accepts_10bis %></td>
+        <td><%= link_to 'Add Review', new_review_path(restaurant_id: restaurant.id) %></td>
         <td><%= link_to 'Show', restaurant %></td>
         <td><%= link_to 'Edit', edit_restaurant_path(restaurant) %></td>
         <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
