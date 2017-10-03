@@ -24,15 +24,15 @@ export default class RestaurantCard extends React.Component {
                     <img className="restaurant-logo" src={restaurant.logo}/>
                     <h4 className="card-title">{restaurant.name}</h4>
 
-                    <p className="card-body">
+                    <div className="card-body">
                         <div>{restaurant.address}</div>
                         {restaurant.speed && (<div>{restaurant.speed} minute delivery</div>)}
                         {restaurant.kosher === true && (<div>Kosher</div>)}
-                        {restaurant.rating && (<StarsRating rating={restaurant.rating}/>)}
+                        {restaurant.rating && (<StarsRating rating={parseInt(restaurant.rating)}/>)}
                         {restaurant.accepts_10bis && (
                             <img src="assets/10bis.png" className="icon-10-bis restaurant-icon"/>
                         )}
-                    </p>
+                    </div>
                 </div>
             </div>
         );

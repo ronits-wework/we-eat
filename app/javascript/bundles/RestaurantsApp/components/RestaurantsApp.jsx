@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {BrowserRouter as Router, Route, BrowserRouter, Switch} from 'react-router-dom'
 import Restaurants from "./Restaurants";
+import SearchInput, {createFilter} from 'react-search-input'
 
 
 export default class RestaurantsApp extends React.Component {
@@ -13,8 +14,17 @@ export default class RestaurantsApp extends React.Component {
         super(props);
 
         this.state = {
-            restaurants: []
+            restaurants: [],
+            displayedRestaurants: [],
+            restaurantFilter: null,
+            minRating: null,
+            cuisineTypeFilter: null,
+            maxSpeed: null,
         };
+    }
+
+    static get minRestaurantFilterLength() {
+        return 2;
     }
 
     componentDidMount() {
@@ -22,8 +32,29 @@ export default class RestaurantsApp extends React.Component {
             .then(res => {
                 return res.json();
             }).then((restaurants) => {
-            this.setState({restaurants});
+            this.setState({
+                restaurants,
+                displayedRestaurants: restaurants
+            });
         });
+    }
+
+    searchRestaurantUpdated(term) {
+        this.setState({restaurantFilter: term});
+        this.filterRestaurants();
+    }
+
+    filterRestaurants() {
+        let restaurants = this.state.restaurants.slice();
+
+        if (this.state.restaurantFilter && this.state.restaurantFilter.length >= RestaurantsApp.minRestaurantFilterLength) {
+            const restaurantFilter = this.state.restaurantFilter.toLowerCase();
+            restaurants = restaurants.filter((restaurant) => {
+                return (restaurant.name.toLowerCase().indexOf(restaurantFilter) >= 0);
+            });
+        }
+
+        this.setState({displayedRestaurants: restaurants});
     }
 
     render() {
@@ -35,7 +66,15 @@ export default class RestaurantsApp extends React.Component {
                     </div>
                     <Switch>
                         <Route exact={true} path={"/"}
-                               render={() => <Restaurants restaurants={this.state.restaurants}/>}/>
+                               render={() => (
+                                   <div>
+                                       <div>
+                                           <SearchInput className="search-input"
+                                                        onChange={this.searchRestaurantUpdated.bind(this)}/>
+                                       </div>
+                                       <Restaurants restaurants={this.state.displayedRestaurants}/>
+                                   </div>
+                               )}/>
                         <Route render={() => <h1>404 not found </h1>}/>
                     </Switch>
                 </div>

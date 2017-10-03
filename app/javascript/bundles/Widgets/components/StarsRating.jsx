@@ -23,7 +23,7 @@ export default class StarsRating extends React.Component {
     };
 
     static get starWidth() {
-        return 25;
+        return 22;
     }
 
     static get defaultStarNum() {
@@ -40,14 +40,14 @@ export default class StarsRating extends React.Component {
         };
         let stars = [];
         for (let i = 0; i < this.props.numStars; i++) {
-            stars.push(<span>★</span>);
+            stars.push(<span key={i}>★</span>);
         }
         return (
-            <div class="stars-rating" style={ratingStyle}>
-                <div class="stars-rating-top" style={topRatingStyle}>
+            <div className="stars-rating" style={ratingStyle}>
+                <div className="stars-rating-top" style={topRatingStyle}>
                     {stars}
                 </div>
-                <div class="stars-rating-bottom">
+                <div className="stars-rating-bottom">
                     {stars}
                 </div>
             </div>
