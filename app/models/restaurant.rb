@@ -4,12 +4,16 @@
 #
 #  id            :integer          not null, primary key
 #  name          :string
-#  rating        :integer
+#  rating        :decimal
 #  speed         :integer
 #  accepts_10bis :boolean
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  address       :string
+#  logo          :string
+#  kosher        :boolean
+#  longitude     :decimal
+#  latitude      :decimal
 #
 
 class Restaurant < ApplicationRecord

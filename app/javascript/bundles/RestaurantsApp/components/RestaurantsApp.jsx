@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {BrowserRouter as Router, Route, BrowserRouter, Switch} from 'react-router-dom'
-import Restaurants from "../../Restaurants/components/Restaurants";
+import Restaurants from "./Restaurants";
 
 
 export default class RestaurantsApp extends React.Component {

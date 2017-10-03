@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+
+@import "_bootstrap.scss";
+@import "restaurants.scss";
+@import "restaurant_card.scss";
+@import "stars-rating.scss";
