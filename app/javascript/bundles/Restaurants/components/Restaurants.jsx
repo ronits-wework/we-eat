@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+
 export default class Restaurants extends React.Component {
 
     /**
@@ -8,18 +9,12 @@ export default class Restaurants extends React.Component {
      */
     constructor(props) {
         super(props);
-
-        // How to set initial state in ES6 class syntax
-        // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-        //this.state = { restaurants: this.props.restaurants };
     }
 
-    // updateName = (name) => {
-    //     this.setState({ name });
-    // };
     static propTypes = {
         restaurants: PropTypes.array.isRequired,
     };
+
 
     render() {
         const restaurantList = this.props.restaurants.map((restaurant) => {

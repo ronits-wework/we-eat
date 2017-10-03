@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { BrowserRouter as Router, Route, BrowserRouter, Switch } from 'react-router-dom'
+import {BrowserRouter as Router, Route, BrowserRouter, Switch} from 'react-router-dom'
 import Restaurants from "../../Restaurants/components/Restaurants";
+
 
 export default class RestaurantsApp extends React.Component {
 
@@ -11,15 +12,19 @@ export default class RestaurantsApp extends React.Component {
     constructor(props) {
         super(props);
 
-        // How to set initial state in ES6 class syntax
-        // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-        //this.state = { restaurants: this.props.restaurants };
+        this.state = {
+            restaurants: []
+        };
     }
 
-    // updateName = (name) => {
-    //     this.setState({ name });
-    // };
-
+    componentDidMount() {
+        fetch("/restaurants.json")
+            .then(res => {
+                return res.json();
+            }).then((restaurants) => {
+            this.setState({restaurants});
+        });
+    }
 
     render() {
         return (
@@ -29,7 +34,8 @@ export default class RestaurantsApp extends React.Component {
                         <h1>WeEat</h1>
                     </div>
                     <Switch>
-                        <Route exact={true} path={"/"} render={() => <Restaurants {...this.props} />}/>
+                        <Route exact={true} path={"/"}
+                               render={() => <Restaurants restaurants={this.state.restaurants}/>}/>
                         <Route render={() => <h1>404 not found </h1>}/>
                     </Switch>
                 </div>
