@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import {BrowserRouter as Router, Route, BrowserRouter, Switch} from 'react-router-dom'
 import Restaurants from "./Restaurants";
 import SearchInput, {createFilter} from 'react-search-input'
 import Select from 'react-select';
@@ -93,9 +91,9 @@ export default class RestaurantsApp extends React.Component {
         if (this.state.cuisineTypeFilter) {
             const currCuisineId = this.state.cuisineTypeFilter.value;
             restaurants = restaurants.filter((restaurant) => {
-               return restaurant.cuisine_types.filter((cuisine) => {
-                   return cuisine.id === currCuisineId;
-               }).length > 0;
+                return restaurant.cuisine_types.filter((cuisine) => {
+                    return cuisine.id === currCuisineId;
+                }).length > 0;
             });
         }
 
@@ -117,7 +115,7 @@ export default class RestaurantsApp extends React.Component {
     }
 
     handle(props) {
-        const { value, dragging, index, ...restProps } = props;
+        const {value, dragging, index, ...restProps} = props;
         return (
             <Tooltip
                 prefixCls="rc-slider-tooltip"
@@ -133,47 +131,34 @@ export default class RestaurantsApp extends React.Component {
 
     render() {
         return (
-            <Router history={BrowserRouter}>
-                <div>
-                    <div className="header">
-                        <h1>WeEat</h1>
-                    </div>
-                    <Switch>
-                        <Route exact={true} path={"/"}
-                               render={() => (
-                                   <div className="restaurants-app">
-                                       <div className="search-restaurants-wrapper">
-                                           <SearchInput className="search-input"
-                                                        placeholder="Search restaurants"
-                                                        onChange={this.searchRestaurantUpdated.bind(this)}/>
-                                       </div>
-                                       <div>
-                                           <Select
-                                               name="cuisine"
-                                               value={this.state.cuisineTypeFilter}
-                                               options={this.state.cuisineTypes.map((cuisine) => {
-                                                   return {value: cuisine.id, label: cuisine.cuisine};
-                                               })}
-                                               onChange={this.cuisineTypeFiltered.bind(this)}
-                                               placeholder="Cuisine"
-                                           />
-                                           <Select
-                                               name="speed"
-                                               value={this.state.maxSpeed}
-                                               options={RestaurantsApp.deliveryTimes.map((time) => {
-                                                   return {value: time, label: time + " minutes"};
-                                               })}
-                                               onChange={this.maxSpeedFiltered.bind(this)}
-                                               placeholder="Delivery time limit"
-                                           />
-                                       </div>
-                                       <Restaurants restaurants={this.state.displayedRestaurants}/>
-                                   </div>
-                               )}/>
-                        <Route render={() => <h1>404 not found </h1>}/>
-                    </Switch>
+            <div className="restaurants-app">
+                <div className="search-restaurants-wrapper">
+                    <SearchInput className="search-input"
+                                 placeholder="Search restaurants"
+                                 onChange={this.searchRestaurantUpdated.bind(this)}/>
                 </div>
-            </Router>
+                <div>
+                    <Select
+                        name="cuisine"
+                        value={this.state.cuisineTypeFilter}
+                        options={this.state.cuisineTypes.map((cuisine) => {
+                            return {value: cuisine.id, label: cuisine.cuisine};
+                        })}
+                        onChange={this.cuisineTypeFiltered.bind(this)}
+                        placeholder="Cuisine"
+                    />
+                    <Select
+                        name="speed"
+                        value={this.state.maxSpeed}
+                        options={RestaurantsApp.deliveryTimes.map((time) => {
+                            return {value: time, label: time + " minutes"};
+                        })}
+                        onChange={this.maxSpeedFiltered.bind(this)}
+                        placeholder="Delivery time limit"
+                    />
+                </div>
+                <Restaurants restaurants={this.state.displayedRestaurants}/>
+            </div>
         );
     }
 }
