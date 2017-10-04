@@ -33,11 +33,19 @@ export default class RestaurantsApp extends React.Component {
         return 2;
     }
 
+    static get maxDeliveryTime() {
+        return 120;
+    }
+
+    static get deliveryInterval() {
+        return 15;
+    }
+
     static get deliveryTimes() {
         let times = [];
-        const maxTime = 120;
-        const interval = 15;
-        for (let i = interval; i <= maxTime; i += interval) {
+        const maxTime = RestaurantsApp.maxDeliveryTime;
+        const interval = RestaurantsApp.deliveryInterval;
+        for (let i = 0; i <= maxTime; i += interval) {
             times.push(i);
         }
         return times;
@@ -98,8 +106,8 @@ export default class RestaurantsApp extends React.Component {
         }
 
         // filter by max speed
-        if (this.state.maxSpeed) {
-            const currMaxSpeed = this.state.maxSpeed.value;
+        if (this.state.maxSpeed && this.state.maxSpeed > 0) {
+            const currMaxSpeed = this.state.maxSpeed;
             restaurants = restaurants.filter((restaurant) => {
                 return restaurant.speed !== null && restaurant.speed <= currMaxSpeed;
             });
@@ -130,6 +138,8 @@ export default class RestaurantsApp extends React.Component {
     };
 
     render() {
+        const sliderTimes = {};
+        RestaurantsApp.deliveryTimes.map((time) => sliderTimes[time] = time);
         return (
             <div className="restaurants-app">
                 <div className="search-restaurants-wrapper">
@@ -147,15 +157,14 @@ export default class RestaurantsApp extends React.Component {
                         onChange={this.cuisineTypeFiltered.bind(this)}
                         placeholder="Cuisine"
                     />
-                    <Select
-                        name="speed"
-                        value={this.state.maxSpeed}
-                        options={RestaurantsApp.deliveryTimes.map((time) => {
-                            return {value: time, label: time + " minutes"};
-                        })}
-                        onChange={this.maxSpeedFiltered.bind(this)}
-                        placeholder="Delivery time limit"
-                    />
+                    <div className="slider-wrapper">
+                        <span>Set delivery time limit (minutes)</span>
+                        <Slider min={0}
+                                max={RestaurantsApp.maxDeliveryTime}
+                                step={RestaurantsApp.deliveryInterval}
+                                marks={sliderTimes}
+                                onAfterChange={this.maxSpeedFiltered.bind(this)}/>
+                    </div>
                 </div>
                 <Restaurants restaurants={this.state.displayedRestaurants}/>
             </div>
