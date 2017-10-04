@@ -3,6 +3,7 @@ import React from 'react';
 import {BrowserRouter as Router, Route, BrowserRouter, Switch} from 'react-router-dom'
 import Restaurants from "./Restaurants";
 import SearchInput, {createFilter} from 'react-search-input'
+import Select from 'react-select';
 
 
 export default class RestaurantsApp extends React.Component {
@@ -16,6 +17,7 @@ export default class RestaurantsApp extends React.Component {
         this.state = {
             restaurants: [],
             displayedRestaurants: [],
+            cuisineTypes: [],
             restaurantFilter: null,
             minRating: null,
             cuisineTypeFilter: null,
@@ -37,11 +39,23 @@ export default class RestaurantsApp extends React.Component {
                 displayedRestaurants: restaurants
             });
         });
+
+        fetch("/cuisine_types.json")
+            .then(res => {
+                return res.json();
+            }).then((cuisineTypes) => {
+            this.setState({
+                cuisineTypes
+            });
+        });
     }
 
     searchRestaurantUpdated(term) {
-        this.setState({restaurantFilter: term});
-        this.filterRestaurants();
+        this.setState({restaurantFilter: term}, this.filterRestaurants);
+    }
+
+    cuisineTypeFiltered(cuisine) {
+        this.setState({cuisineTypeFilter: cuisine}, this.filterRestaurants);
     }
 
     filterRestaurants() {
@@ -51,6 +65,15 @@ export default class RestaurantsApp extends React.Component {
             const restaurantFilter = this.state.restaurantFilter.toLowerCase();
             restaurants = restaurants.filter((restaurant) => {
                 return (restaurant.name.toLowerCase().indexOf(restaurantFilter) >= 0);
+            });
+        }
+
+        if (this.state.cuisineTypeFilter) {
+            const currCuisineId = this.state.cuisineTypeFilter.value;
+            restaurants = restaurants.filter((restaurant) => {
+               return restaurant.cuisine_types.filter((cuisine) => {
+                   return cuisine.id === currCuisineId;
+               }).length > 0;
             });
         }
 
@@ -67,10 +90,22 @@ export default class RestaurantsApp extends React.Component {
                     <Switch>
                         <Route exact={true} path={"/"}
                                render={() => (
-                                   <div>
-                                       <div>
+                                   <div className="restaurants-app">
+                                       <div className="search-restaurants-wrapper">
                                            <SearchInput className="search-input"
+                                                        placeholder="Search restaurants"
                                                         onChange={this.searchRestaurantUpdated.bind(this)}/>
+                                       </div>
+                                       <div>
+                                           <Select
+                                               name="form-field-name"
+                                               value={this.state.cuisineTypeFilter}
+                                               options={this.state.cuisineTypes.map((cuisine) => {
+                                                   return {value: cuisine.id, label: cuisine.cuisine};
+                                               })}
+                                               onChange={this.cuisineTypeFiltered.bind(this)}
+                                               placeholder="Cuisine"
+                                           />
                                        </div>
                                        <Restaurants restaurants={this.state.displayedRestaurants}/>
                                    </div>

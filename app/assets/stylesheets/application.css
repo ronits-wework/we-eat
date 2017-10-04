@@ -18,4 +18,6 @@
 @import "_bootstrap.scss";
 @import "restaurants.scss";
 @import "restaurant_card.scss";
-@import "stars-rating.scss";
+@import "stars_rating.scss";
+@import "restaurants_app.scss";
+@import "react-select.scss";
