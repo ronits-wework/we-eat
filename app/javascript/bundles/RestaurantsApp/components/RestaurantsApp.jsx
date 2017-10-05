@@ -6,7 +6,6 @@ import Slider from 'rc-slider';
 import Tooltip from 'rc-tooltip';
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
-const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
 
 

@@ -1,5 +1,5 @@
 
-.stars-rating {
+.rating-star {
 
   unicode-bidi: bidi-override;
   color: #c5c5c5;
@@ -12,8 +12,9 @@
   text-shadow: 0px 1px 0 #a2a2a2;
   text-align: left !important;
   word-wrap: initial;
+  float: left;
 
-  &-top {
+  &-colored {
     color: #e7711b;
     padding: 0;
     position: absolute;
@@ -22,7 +23,7 @@
     left: 0;
     overflow: hidden;
   }
-  &-bottom {
+  &-empty {
     padding: 0;
     display: block;
   }
@@ -34,3 +35,4 @@
   h2 { font-size: 16px; margin-bottom: 15px;}
 
 }
+
