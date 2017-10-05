@@ -3,8 +3,7 @@ import Restaurants from "./Restaurants";
 import SearchInput from 'react-search-input'
 import Select from 'react-select';
 import Slider from 'rc-slider';
-import Tooltip from 'rc-tooltip';
-import StarsRating from "../../Widgets/components/StarsRating";
+import StarsRatingFilter from "../../Widgets/components/StarsRatingFilter";
 
 const Handle = Slider.Handle;
 
@@ -153,10 +152,8 @@ export default class RestaurantsApp extends React.Component {
                                 onAfterChange={this.maxSpeedFiltered.bind(this)}/>
                     </div>
                     <div>
-                        <StarsRating
-                            numStars={MAX_RESTAURANT_RATING}
-                            interactiveRating={true}
-                            ratingCallback={this.minRatingFiltered.bind(this)}
+                        <StarsRatingFilter
+                            minRatingFiltered={this.minRatingFiltered.bind(this)}
                         />
                     </div>
                 </div>

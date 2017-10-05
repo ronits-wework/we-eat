@@ -98,6 +98,13 @@ export default class StarsRating extends React.Component {
         this.setState({isHoverMode: false});
     }
 
+    setRating(rating) {
+        this.setState({rating: rating});
+        if (this.props.ratingCallback) {
+            this.props.ratingCallback(rating);
+        }
+    }
+
     render() {
         let stars = [];
         const starClass = this.state.isHoverMode ? "to-be-rated" : "rated";
