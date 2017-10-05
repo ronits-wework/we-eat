@@ -15,13 +15,20 @@
   float: left;
 
   &-colored {
-    color: #e7711b;
     padding: 0;
     position: absolute;
     display: block;
     top: 0;
     left: 0;
     overflow: hidden;
+
+    .rated {
+      color: #e7711b;
+    }
+
+    .to-be-rated {
+      color: #f4a71d;
+    }
   }
   &-empty {
     padding: 0;

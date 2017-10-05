@@ -21,7 +21,8 @@ class RatingStar extends React.Component {
             width: this.props.ratingPercent + "%"
         };
         return (
-            <div className="rating-star">
+            <div className="rating-star" onClick={this.props.onClick}
+                 onMouseEnter={this.props.onMouseEnter} onMouseLeave={this.props.onMouseLeave}>
                 <div className="rating-star-colored" style={starRatingStyle}>
                     <span className={this.props.starClass}>★</span>
                 </div>
@@ -34,6 +35,18 @@ class RatingStar extends React.Component {
     }
 }
 
+
+const DEFAULT_STAR_NUM = 3;
+
+const starRatingEvents = Object.freeze({
+    STAR_CLICK: Symbol("starClick"),
+    STAR_ENTER: Symbol("starEnter"),
+    STAR_LEAVE: Symbol("starLeave"),
+    ENTER: Symbol("enter"),
+    LEAVE: Symbol("leave")
+});
+
+
 export default class StarsRating extends React.Component {
 
     /**
@@ -41,29 +54,84 @@ export default class StarsRating extends React.Component {
      */
     constructor(props) {
         super(props);
+
+        this.state = {
+            hoveredStar: null,
+            clickedStar: null,
+            rating: this.props.interactiveRating ? 0 : this.props.rating,
+            isHoverMode: false,
+        }
+
+        this.isHoverMode = false;
     }
 
     static propTypes = {
-        displayOnly: PropTypes.bool,
+        interactiveRating: PropTypes.bool,
         rating: PropTypes.number,
         numStars: PropTypes.number.isRequired,
     };
 
     static defaultProps = {
-        displayOnly: true,
+        interactiveRating: true,
         rating: 0,
-        numStars: StarsRating.defaultStarNum,
+        numStars: DEFAULT_STAR_NUM,
     };
 
-    static get defaultStarNum() {
-        return 3;
+
+    handleEvent(eventName, eventParams) {
+        if (!this.props.interactiveRating) {
+            return;
+        }
+
+        switch (eventName) {
+            case starRatingEvents.STAR_CLICK:
+                this.handleStarClick(eventParams.starNum);
+                break;
+            case starRatingEvents.STAR_ENTER:
+                this.handleStarMouseEnter(eventParams.starNum);
+                break;
+            case starRatingEvents.STAR_LEAVE:
+                this.handleStarMouseLeave(eventParams.starNum);
+                break;
+            case starRatingEvents.ENTER:
+                this.handleMouseEnter();
+                break;
+            case starRatingEvents.LEAVE:
+                this.handleMouseLeave();
+                break;
+        }
     }
 
+    handleStarClick(i) {
+        this.setState({
+            clickedStar: i,
+            rating: (i + 1),
+            isHoverMode: false
+        });
+    }
+
+    handleStarMouseEnter(i) {
+        this.setState({hoveredStar: (i + 1)});
+    }
+
+    handleStarMouseLeave(i) {
+        this.setState({hoveredStar: null});
+    }
+
+    handleMouseEnter() {
+        this.setState({isHoverMode: true});
+    }
+
+    handleMouseLeave() {
+        this.setState({isHoverMode: false});
+    }
 
     render() {
         let stars = [];
-        const starsToRate = Math.floor(this.props.rating);
-        let partialStarRating = this.props.rating - starsToRate;
+        const starClass = this.state.isHoverMode ? "to-be-rated" : "rated";
+        let rating = (this.state.isHoverMode && this.state.hoveredStar) ? this.state.hoveredStar : this.state.rating;
+        const starsToRate = Math.floor(rating);
+        let partialStarRating = rating - starsToRate;
         for (let i = 0; i < this.props.numStars; i++) {
             let ratingPercent = 0;
             if (i < starsToRate) {
@@ -72,10 +140,19 @@ export default class StarsRating extends React.Component {
             else if (i === starsToRate) {
                 ratingPercent = partialStarRating * 100;
             }
-            stars.push(<RatingStar key={i} starClass="rated" ratingPercent={ratingPercent} />);
+            stars.push(
+                <RatingStar
+                    key={i} starClass={starClass}
+                    ratingPercent={ratingPercent}
+                    onClick={() => this.handleEvent(starRatingEvents.STAR_CLICK, {starNum: i})}
+                    onMouseEnter={() => this.handleEvent(starRatingEvents.STAR_ENTER, {starNum: i})}
+                    onMouseLeave={() => this.handleEvent(starRatingEvents.STAR_LEAVE, {starNum: i})}
+                />);
         }
         return (
-            <div className="stars-rating">
+            <div className="stars-rating"
+                 onMouseEnter={() => this.handleEvent(starRatingEvents.ENTER, {})}
+                 onMouseLeave={() => this.handleEvent(starRatingEvents.LEAVE, {})}>
                 {stars}
             </div>
         );
