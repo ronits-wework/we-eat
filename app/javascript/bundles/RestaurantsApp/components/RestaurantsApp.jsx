@@ -1,13 +1,19 @@
 import React from 'react';
 import Restaurants from "./Restaurants";
-import SearchInput, {createFilter} from 'react-search-input'
+import SearchInput from 'react-search-input'
 import Select from 'react-select';
 import Slider from 'rc-slider';
 import Tooltip from 'rc-tooltip';
+import StarsRating from "../../Widgets/components/StarsRating";
 
-const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Handle = Slider.Handle;
 
+const MIN_RESTAURANT_FILTER_LENGTH = 2;
+const MAX_DELIVERY_TIME = 120;
+const DELIVERY_INTERVAL = 15;
+
+
+export const MAX_RESTAURANT_RATING = 3;
 
 export default class RestaurantsApp extends React.Component {
 
@@ -28,22 +34,10 @@ export default class RestaurantsApp extends React.Component {
         };
     }
 
-    static get minRestaurantFilterLength() {
-        return 2;
-    }
-
-    static get maxDeliveryTime() {
-        return 120;
-    }
-
-    static get deliveryInterval() {
-        return 15;
-    }
-
     static get deliveryTimes() {
         let times = [];
-        const maxTime = RestaurantsApp.maxDeliveryTime;
-        const interval = RestaurantsApp.deliveryInterval;
+        const maxTime = MAX_DELIVERY_TIME;
+        const interval = DELIVERY_INTERVAL;
         for (let i = 0; i <= maxTime; i += interval) {
             times.push(i);
         }
@@ -83,11 +77,15 @@ export default class RestaurantsApp extends React.Component {
         this.setState({maxSpeed: time}, this.filterRestaurants);
     }
 
+    minRatingFiltered(minRating) {
+        this.setState({minRating: minRating}, this.filterRestaurants);
+    }
+
     filterRestaurants() {
         let restaurants = this.state.restaurants.slice();
 
         // filter by restaurant name
-        if (this.state.restaurantFilter && this.state.restaurantFilter.length >= RestaurantsApp.minRestaurantFilterLength) {
+        if (this.state.restaurantFilter && this.state.restaurantFilter.length >= MIN_RESTAURANT_FILTER_LENGTH) {
             const restaurantFilter = this.state.restaurantFilter.toLowerCase();
             restaurants = restaurants.filter((restaurant) => {
                 return (restaurant.name.toLowerCase().indexOf(restaurantFilter) >= 0);
@@ -113,6 +111,11 @@ export default class RestaurantsApp extends React.Component {
         }
 
         // filter by min rating
+        if (this.state.minRating > 0) {
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.rating >= this.state.minRating;
+            });
+        }
 
         // filter by 10bis
 
@@ -120,21 +123,6 @@ export default class RestaurantsApp extends React.Component {
 
         this.setState({displayedRestaurants: restaurants});
     }
-
-    handle(props) {
-        const {value, dragging, index, ...restProps} = props;
-        return (
-            <Tooltip
-                prefixCls="rc-slider-tooltip"
-                overlay={value}
-                visible={dragging}
-                placement="top"
-                key={index}
-            >
-                <Handle value={value} {...restProps} />
-            </Tooltip>
-        );
-    };
 
     render() {
         const sliderTimes = {};
@@ -159,10 +147,17 @@ export default class RestaurantsApp extends React.Component {
                     <div className="slider-wrapper">
                         <span>Set delivery time limit (minutes)</span>
                         <Slider min={0}
-                                max={RestaurantsApp.maxDeliveryTime}
-                                step={RestaurantsApp.deliveryInterval}
+                                max={MAX_DELIVERY_TIME}
+                                step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
                                 onAfterChange={this.maxSpeedFiltered.bind(this)}/>
+                    </div>
+                    <div>
+                        <StarsRating
+                            numStars={MAX_RESTAURANT_RATING}
+                            interactiveRating={true}
+                            ratingCallback={this.minRatingFiltered.bind(this)}
+                        />
                     </div>
                 </div>
                 <Restaurants restaurants={this.state.displayedRestaurants}/>

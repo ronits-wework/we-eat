@@ -36,6 +36,7 @@ export default class StarsRating extends React.Component {
         interactiveRating: PropTypes.bool,
         rating: PropTypes.number,
         numStars: PropTypes.number.isRequired,
+        ratingCallback: PropTypes.func,
     };
 
     static defaultProps = {
@@ -70,11 +71,15 @@ export default class StarsRating extends React.Component {
     }
 
     handleStarClick(i) {
+        const newRating = (i + 1);
         this.setState({
             clickedStar: i,
-            rating: (i + 1),
+            rating: newRating,
             isHoverMode: false
         });
+        if (this.props.ratingCallback) {
+            this.props.ratingCallback(newRating);
+        }
     }
 
     handleStarMouseEnter(i) {

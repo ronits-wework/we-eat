@@ -7,7 +7,7 @@ export default class RatingStar extends React.Component {
     }
 
     static propTypes = {
-        starClass: PropTypes.string, //PropTypes.oneOf(['rated', 'toBeRated', 'unrated']),
+        starClass: PropTypes.string,
         ratingPercent: PropTypes.number,
     };
 

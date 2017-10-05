@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import StarsRating from "../../Widgets/components/StarsRating";
+import {MAX_RESTAURANT_RATING} from './RestaurantsApp'
 
 export default class RestaurantCard extends React.Component {
 
@@ -28,7 +29,13 @@ export default class RestaurantCard extends React.Component {
                         <div>{restaurant.address}</div>
                         {restaurant.speed && (<div>{restaurant.speed} minute delivery</div>)}
                         {restaurant.kosher === true && (<div>Kosher</div>)}
-                        {restaurant.rating && (<StarsRating rating={parseFloat(restaurant.rating)} interactiveRating={false}/>)}
+                        {restaurant.rating && (
+                            <StarsRating
+                                rating={parseFloat(restaurant.rating)}
+                                interactiveRating={false}
+                                numStars={MAX_RESTAURANT_RATING}
+                            />
+                        )}
                         {restaurant.accepts_10bis && (
                             <img src="assets/10bis.png" className="icon-10-bis restaurant-icon"/>
                         )}
