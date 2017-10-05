@@ -30,6 +30,8 @@ export default class RestaurantsApp extends React.Component {
             minRating: null,
             cuisineTypeFilter: null,
             maxSpeed: null,
+            is10bisFilter: false,
+            isKosherFilter: false,
         };
     }
 
@@ -80,6 +82,14 @@ export default class RestaurantsApp extends React.Component {
         this.setState({minRating: minRating}, this.filterRestaurants);
     }
 
+    is10bisFiltered(event) {
+        this.setState({is10bisFilter: event.target.checked}, this.filterRestaurants);
+    }
+
+    isKosherFiltered(event) {
+        this.setState({isKosherFilter: event.target.checked}, this.filterRestaurants);
+    }
+
     filterRestaurants() {
         let restaurants = this.state.restaurants.slice();
 
@@ -117,8 +127,18 @@ export default class RestaurantsApp extends React.Component {
         }
 
         // filter by 10bis
+        if (this.state.is10bisFilter > 0) {
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.accepts_10bis;
+            });
+        }
 
         // filter by kosher
+        if (this.state.isKosherFilter > 0) {
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.kosher;
+            });
+        }
 
         this.setState({displayedRestaurants: restaurants});
     }
@@ -155,6 +175,22 @@ export default class RestaurantsApp extends React.Component {
                         <StarsRatingFilter
                             minRatingFiltered={this.minRatingFiltered.bind(this)}
                         />
+                    </div>
+                    <div>
+                        Only 10bis:
+                        <input
+                            name="is10bis"
+                            type="checkbox"
+                            checked={this.state.is10bisFilter}
+                            onChange={this.is10bisFiltered.bind(this)} />
+                    </div>
+                    <div>
+                        Only kosher:
+                        <input
+                            name="isKosher"
+                            type="checkbox"
+                            checked={this.state.isKosherFilter}
+                            onChange={this.isKosherFiltered.bind(this)} />
                     </div>
                 </div>
                 <Restaurants restaurants={this.state.displayedRestaurants}/>
