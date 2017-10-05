@@ -25,7 +25,10 @@ export default class StarsRatingFilter extends React.Component {
                     interactiveRating={true}
                     ratingCallback={this.props.minRatingFiltered.bind(this)}
                 />
-                <span onClick={() => {this.starsRating.setRating(0)}}>X</span>
+                <button type="button" className="close" aria-label="Close"
+                        onClick={() => {this.starsRating.setRating(0)}}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
         )
