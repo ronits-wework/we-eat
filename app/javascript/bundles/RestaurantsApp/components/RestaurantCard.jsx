@@ -19,6 +19,7 @@ export default class RestaurantCard extends React.Component {
 
     render() {
         const restaurant = this.props.restaurant;
+        const cuisineTypes = restaurant.cuisine_types.map((cuisineType) => cuisineType.cuisine);
         return (
             <div key={restaurant.id} className="card restaurant-card">
                 <div className="card-block text-center">
@@ -39,6 +40,9 @@ export default class RestaurantCard extends React.Component {
                         {restaurant.accepts_10bis && (
                             <img src="assets/10bis.png" className="icon-10-bis restaurant-icon"/>
                         )}
+                        <div>
+                            {cuisineTypes}
+                        </div>
                     </div>
                 </div>
             </div>

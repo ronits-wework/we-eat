@@ -27,9 +27,6 @@ export default class Restaurants extends React.Component {
         });
         return (
             <div className="restaurants">
-                <h1>
-                    Restaurants
-                </h1>
                 {restaurantList}
             </div>
         );

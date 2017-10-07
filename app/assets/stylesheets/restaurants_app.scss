@@ -1,7 +1,26 @@
 
 .restaurants-app {
+
+  .top-part {
+    background-image: url(restaurant_tables.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position-y: -70px;
+    background-size: cover;
+  }
+
+  .app-header {
+    text-align: center;
+    padding: 120px;
+    color: #1f6730;
+    font-family: fantasy;
+    font-size: 52px;
+    font-weight: bold;
+  }
+
   .search-restaurants-wrapper {
-    margin: 20px;
+    padding: 20px;
+    text-align: center;
 
     .search-input input {
       width: 300px;
@@ -9,13 +28,38 @@
 
   }
 
-  .Select {
-    margin: 20px;
-    width: 300px;
+  .restaurant-filters {
+    height: 100px;
+
+    .Select, .slider-wrapper {
+      width: 300px;
+    }
+
+    .stars-rating-filter-wrapper {
+      width: 100px;
+    }
+
+    .checkbox-wrapper input {
+      left: 7px;
+      position: relative;
+    }
+
   }
 
-  .slider-wrapper {
-    width: 300px;
+  .restaurant-filters > * {
+    float: left;
     margin: 20px;
   }
+
+  .restaurants-wrapper {
+    float: left;
+    overflow: hidden;
+    width: 400px;
+  }
+
+  .map-wrapper {
+    overflow: hidden;
+  }
+
+
 }

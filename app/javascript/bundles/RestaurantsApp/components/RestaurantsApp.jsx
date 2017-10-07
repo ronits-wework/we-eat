@@ -148,12 +148,15 @@ export default class RestaurantsApp extends React.Component {
         RestaurantsApp.deliveryTimes.map((time) => sliderTimes[time] = time);
         return (
             <div className="restaurants-app">
-                <div className="search-restaurants-wrapper">
-                    <SearchInput className="search-input"
-                                 placeholder="Search restaurants"
-                                 onChange={this.searchRestaurantUpdated.bind(this)}/>
+                <div className="top-part">
+                    <h1 className="app-header">Eat What You Love</h1>
+                    <div className="search-restaurants-wrapper">
+                        <SearchInput className="search-input"
+                                     placeholder="Search restaurants"
+                                     onChange={this.searchRestaurantUpdated.bind(this)}/>
+                    </div>
                 </div>
-                <div>
+                <div className="restaurant-filters">
                     <Select
                         name="cuisine"
                         value={this.state.cuisineTypeFilter}
@@ -164,36 +167,40 @@ export default class RestaurantsApp extends React.Component {
                         placeholder="Cuisine"
                     />
                     <div className="slider-wrapper">
-                        <span>Set delivery time limit (minutes)</span>
+                        <span>Delivery time limit (minutes)</span>
                         <Slider min={0}
                                 max={MAX_DELIVERY_TIME}
                                 step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
                                 onAfterChange={this.maxSpeedFiltered.bind(this)}/>
                     </div>
-                    <div>
+                    <div className="stars-rating-filter-wrapper">
                         <StarsRatingFilter
                             minRatingFiltered={this.minRatingFiltered.bind(this)}
                         />
                     </div>
-                    <div>
+                    <div className="checkbox-wrapper">
                         Only 10bis:
                         <input
                             name="is10bis"
                             type="checkbox"
                             checked={this.state.is10bisFilter}
-                            onChange={this.is10bisFiltered.bind(this)} />
+                            onChange={this.is10bisFiltered.bind(this)}/>
                     </div>
-                    <div>
+                    <div className="checkbox-wrapper">
                         Only kosher:
                         <input
                             name="isKosher"
                             type="checkbox"
                             checked={this.state.isKosherFilter}
-                            onChange={this.isKosherFiltered.bind(this)} />
+                            onChange={this.isKosherFiltered.bind(this)}/>
                     </div>
                 </div>
-                <Restaurants restaurants={this.state.displayedRestaurants}/>
+                <div className="restaurants-wrapper">
+                    <Restaurants restaurants={this.state.displayedRestaurants}/>
+                </div>
+                <div className="map-wrapper">
+                </div>
             </div>
         );
     }
