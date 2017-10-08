@@ -14,15 +14,15 @@ const MAX_DELIVERY_TIME = 120;
 const DELIVERY_INTERVAL = 15;
 
 const customStyles = {
-    content : {
-        top                   : '70px',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, 0)',
-        height                : '500px',
-        width                : '500px',
+    content: {
+        top: '70px',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, 0)',
+        height: '500px',
+        width: '500px',
     }
 };
 
@@ -212,6 +212,9 @@ export default class RestaurantsApp extends React.Component {
                                 return {value: cuisine.id, label: cuisine.cuisine};
                             })}
                             onCancel={this.closeModal}
+                            deliveryTimes={RestaurantsApp.deliveryTimes.map((time) => {
+                                return {value: time, label: time}
+                            })}
                         />
                     </Modal>
 
@@ -243,13 +246,13 @@ export default class RestaurantsApp extends React.Component {
                     <CheckboxFilter
                         onCheckChange={this.is10bisFiltered}
                         isChecked={this.state.is10bisFilter}
-                        label={"Only 10bis:"}
+                        label={"Only 10bis"}
                         inputName={"is10bis"}
                     />
                     <CheckboxFilter
                         onCheckChange={this.isKosherFiltered}
                         isChecked={this.state.isKosherFilter}
-                        label={"Only kosher:"}
+                        label={"Only kosher"}
                         inputName={"isKosher"}
                     />
                 </div>

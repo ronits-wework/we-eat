@@ -16,8 +16,10 @@ class DropdownInput extends React.Component {
     };
 
     render() {
+        const className = 'dropdown-input form-group' + (this.props.className || ' ') + (this.props.showRequired() ? 'required' : this.props.showError() ? 'error' : null);
+        const errorMessage = this.props.getErrorMessage();
         return (
-            <div className="dropdown-input form-group">
+            <div className={className}>
                 {this.props.label}
                 <Select
                     name={this.props.name}
@@ -25,6 +27,7 @@ class DropdownInput extends React.Component {
                     options={this.props.options}
                     onChange={(value) => this.props.setValue(value)}
                 />
+                <span className='validation-error'>{errorMessage}</span>
             </div>
         );
     }

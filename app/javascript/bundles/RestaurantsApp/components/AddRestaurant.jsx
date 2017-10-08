@@ -3,6 +3,7 @@ import React from 'react';
 import Formsy from 'formsy-react';
 import TextInput from '../../Forms/components/TextInput';
 import DropdownInput from '../../Forms/components/DropdownInput';
+import CheckboxInput from '../../Forms/components/CheckboxInput';
 
 
 Formsy.addValidationRule('minTwoChars', function (values, value) {
@@ -26,6 +27,7 @@ export default class AddRestaurantForm extends React.Component {
     static propTypes = {
         cuisines: PropTypes.array.isRequired,
         onCancel: PropTypes.func.isRequired,
+        deliveryTimes: PropTypes.array.isRequired,
     };
 
     getInitialState() {
@@ -64,17 +66,29 @@ export default class AddRestaurantForm extends React.Component {
                         <TextInput
                             name="restaurantName"
                             validations="minTwoChars"
-                            validationError="Restaurant name must have at least two characters"
                             label="Restaurant Name"
                             validationErrors={{
-                                isDefaultRequiredValue: 'Field is required'
+                                isDefaultRequiredValue: 'Field is required',
+                                minTwoChars: "Type at least two characters"
                             }}
                             required/>
                         <DropdownInput
                             name="cuisineType"
-                            label="Choose a cuisine"
+                            label="Choose a Cuisine"
                             options={this.props.cuisines}
-                            required
+                        />
+                        <DropdownInput
+                            name="speed"
+                            label="Delivery time (minutes)"
+                            options={this.props.deliveryTimes}
+                        />
+                        <CheckboxInput
+                            name="accepts10bis"
+                            label="Accepts 10bis"
+                        />
+                        <CheckboxInput
+                            name="isKosher"
+                            label="Is kosher"
                         />
                     </div>
                     <div className="footer">

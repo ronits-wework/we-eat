@@ -16,12 +16,12 @@ export default class CheckboxFilter extends React.Component {
     render() {
         return (
             <div className="checkbox-wrapper">
-                {this.props.label}
                 <input
                     name={this.props.inputName}
                     type="checkbox"
                     checked={this.props.isChecked}
                     onChange={this.props.onCheckChange}/>
+                {this.props.label}
             </div>
         );
     }
