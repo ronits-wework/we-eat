@@ -3,9 +3,9 @@ import Restaurants from "./Restaurants";
 import SearchInput from 'react-search-input'
 import Select from 'react-select';
 import Slider from 'rc-slider';
-import StarsRatingFilter from "../../Widgets/components/StarsRatingFilter";
+import StarsRatingFilter from "../../StarsRating/components/StarsRatingFilter";
+import CheckboxFilter from "../../Filters/components/CheckboxFilter"
 
-const Handle = Slider.Handle;
 
 const MIN_RESTAURANT_FILTER_LENGTH = 2;
 const MAX_DELIVERY_TIME = 120;
@@ -33,6 +33,13 @@ export default class RestaurantsApp extends React.Component {
             is10bisFilter: false,
             isKosherFilter: false,
         };
+
+        this.searchRestaurantUpdated = this.searchRestaurantUpdated.bind(this);
+        this.cuisineTypeFiltered = this.cuisineTypeFiltered.bind(this);
+        this.maxSpeedFiltered = this.maxSpeedFiltered.bind(this);
+        this.minRatingFiltered = this.minRatingFiltered.bind(this);
+        this.is10bisFiltered = this.is10bisFiltered.bind(this);
+        this.isKosherFiltered = this.isKosherFiltered.bind(this);
     }
 
     static get deliveryTimes() {
@@ -153,7 +160,7 @@ export default class RestaurantsApp extends React.Component {
                     <div className="search-restaurants-wrapper">
                         <SearchInput className="search-input"
                                      placeholder="Search restaurants"
-                                     onChange={this.searchRestaurantUpdated.bind(this)}/>
+                                     onChange={this.searchRestaurantUpdated}/>
                     </div>
                 </div>
                 <div className="restaurant-filters">
@@ -163,7 +170,7 @@ export default class RestaurantsApp extends React.Component {
                         options={this.state.cuisineTypes.map((cuisine) => {
                             return {value: cuisine.id, label: cuisine.cuisine};
                         })}
-                        onChange={this.cuisineTypeFiltered.bind(this)}
+                        onChange={this.cuisineTypeFiltered}
                         placeholder="Cuisine"
                     />
                     <div className="slider-wrapper">
@@ -172,29 +179,25 @@ export default class RestaurantsApp extends React.Component {
                                 max={MAX_DELIVERY_TIME}
                                 step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
-                                onAfterChange={this.maxSpeedFiltered.bind(this)}/>
+                                onAfterChange={this.maxSpeedFiltered}/>
                     </div>
                     <div className="stars-rating-filter-wrapper">
                         <StarsRatingFilter
-                            minRatingFiltered={this.minRatingFiltered.bind(this)}
+                            minRatingFiltered={this.minRatingFiltered}
                         />
                     </div>
-                    <div className="checkbox-wrapper">
-                        Only 10bis:
-                        <input
-                            name="is10bis"
-                            type="checkbox"
-                            checked={this.state.is10bisFilter}
-                            onChange={this.is10bisFiltered.bind(this)}/>
-                    </div>
-                    <div className="checkbox-wrapper">
-                        Only kosher:
-                        <input
-                            name="isKosher"
-                            type="checkbox"
-                            checked={this.state.isKosherFilter}
-                            onChange={this.isKosherFiltered.bind(this)}/>
-                    </div>
+                    <CheckboxFilter
+                        onCheckChange={this.is10bisFiltered}
+                        isChecked={this.state.is10bisFilter}
+                        label={"Only 10bis:"}
+                        inputName={"is10bis"}
+                    />
+                    <CheckboxFilter
+                        onCheckChange={this.isKosherFiltered}
+                        isChecked={this.state.isKosherFilter}
+                        label={"Only kosher:"}
+                        inputName={"isKosher"}
+                    />
                 </div>
                 <div className="restaurants-wrapper">
                     <Restaurants restaurants={this.state.displayedRestaurants}/>

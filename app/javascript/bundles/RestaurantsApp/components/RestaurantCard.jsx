@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import StarsRating from "../../Widgets/components/StarsRating";
+import StarsRating from "../../StarsRating/components/StarsRating";
 import {MAX_RESTAURANT_RATING} from './RestaurantsApp'
 
 export default class RestaurantCard extends React.Component {
@@ -38,7 +38,7 @@ export default class RestaurantCard extends React.Component {
                             />
                         )}
                         {restaurant.accepts_10bis && (
-                            <img src="assets/10bis.png" className="icon-10-bis restaurant-icon"/>
+                            <img className="icon-10-bis restaurant-icon"/>
                         )}
                         <div>
                             {cuisineTypes}
