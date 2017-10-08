@@ -22,3 +22,5 @@
 @import "restaurants_app.scss";
 @import "react-select/dist/react-select.css";
 @import "rc-slider/assets/index.css";
+@import "../fonts/cuisine-webfont/stylesheet.scss";
+@import "forms.scss";

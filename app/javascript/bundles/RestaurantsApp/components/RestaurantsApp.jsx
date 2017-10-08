@@ -1,15 +1,30 @@
 import React from 'react';
 import Restaurants from "./Restaurants";
+import AddRestaurantForm from './AddRestaurant';
 import SearchInput from 'react-search-input'
 import Select from 'react-select';
 import Slider from 'rc-slider';
 import StarsRatingFilter from "../../StarsRating/components/StarsRatingFilter";
 import CheckboxFilter from "../../Filters/components/CheckboxFilter"
+import Modal from 'react-modal';
 
 
 const MIN_RESTAURANT_FILTER_LENGTH = 2;
 const MAX_DELIVERY_TIME = 120;
 const DELIVERY_INTERVAL = 15;
+
+const customStyles = {
+    content : {
+        top                   : '70px',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, 0)',
+        height                : '500px',
+        width                : '500px',
+    }
+};
 
 
 export const MAX_RESTAURANT_RATING = 3;
@@ -32,6 +47,7 @@ export default class RestaurantsApp extends React.Component {
             maxSpeed: null,
             is10bisFilter: false,
             isKosherFilter: false,
+            addRestModalIsOpen: false,
         };
 
         this.searchRestaurantUpdated = this.searchRestaurantUpdated.bind(this);
@@ -40,6 +56,9 @@ export default class RestaurantsApp extends React.Component {
         this.minRatingFiltered = this.minRatingFiltered.bind(this);
         this.is10bisFiltered = this.is10bisFiltered.bind(this);
         this.isKosherFiltered = this.isKosherFiltered.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     static get deliveryTimes() {
@@ -72,6 +91,21 @@ export default class RestaurantsApp extends React.Component {
             });
         });
     }
+
+
+    openModal() {
+        this.setState({addRestModalIsOpen: true});
+    }
+
+    afterOpenModal() {
+        // references are now sync'd and can be accessed.
+        //this.subtitle.style.color = '#f00';
+    }
+
+    closeModal() {
+        this.setState({addRestModalIsOpen: false});
+    }
+
 
     searchRestaurantUpdated(term) {
         this.setState({restaurantFilter: term}, this.filterRestaurants);
@@ -158,11 +192,31 @@ export default class RestaurantsApp extends React.Component {
                 <div className="top-part">
                     <h1 className="app-header">Eat What You Love</h1>
                     <div className="search-restaurants-wrapper">
+                        <a onClick={this.openModal}
+                           className="add-restaurant-btn">+</a>
                         <SearchInput className="search-input"
                                      placeholder="Search restaurants"
                                      onChange={this.searchRestaurantUpdated}/>
                     </div>
+
+
+                    <Modal
+                        isOpen={this.state.addRestModalIsOpen}
+                        onAfterOpen={this.afterOpenModal}
+                        onRequestClose={this.closeModal}
+                        style={customStyles}
+                        contentLabel="Add a Restaurant"
+                    >
+                        <AddRestaurantForm
+                            cuisines={this.state.cuisineTypes.map((cuisine) => {
+                                return {value: cuisine.id, label: cuisine.cuisine};
+                            })}
+                            onCancel={this.closeModal}
+                        />
+                    </Modal>
+
                 </div>
+
                 <div className="restaurant-filters">
                     <Select
                         name="cuisine"
