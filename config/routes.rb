@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  root 'restaurants#index', as: 'restaurant_index'
 
-  resources :restaurants
-  resources :cuisine_types
+  resources :restaurants, only: [:index, :create, :show]
+  resources :cuisine_types, only: [:index, :create, :show]
 
   # Make every request to go to restaurants#index
   get '(*path)', to: 'restaurants#index'
