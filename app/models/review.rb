@@ -5,8 +5,7 @@ class Review < ApplicationRecord
   after_update :update_rating_to_restaurant!
   after_destroy :delete_rating_from_restaurant!
 
-  validates :name, :rating, :comment, presence: true
-  validates :name, length: { minimum: 2 }
+  validates :rating, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: WeEat::MIN_REVIEW_RATING,
                                      less_than_or_equal_to: WeEat::MAX_REVIEW_RATING }
 

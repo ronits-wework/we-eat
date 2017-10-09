@@ -2,6 +2,21 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import StarsRating from "../../StarsRating/components/StarsRating";
 import {MAX_RESTAURANT_RATING} from './RestaurantsApp'
+import Modal from 'react-modal';
+import AddReviewForm from "./AddReview";
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        height: '400px',
+        width: '400px',
+    }
+};
 
 export default class RestaurantCard extends React.Component {
 
@@ -10,11 +25,33 @@ export default class RestaurantCard extends React.Component {
      */
     constructor(props) {
         super(props);
+
+        this.state = {
+            rateModalIsOpen: false,
+            userRating: 0,
+        }
+
+        this.openRateModal = this.openRateModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeRateModal = this.closeRateModal.bind(this);
     }
 
     static propTypes = {
         restaurant: PropTypes.object.isRequired,
     };
+
+    openRateModal() {
+        this.setState({rateModalIsOpen: true});
+    }
+
+    afterOpenModal() {
+        // references are now sync'd and can be accessed.
+        //this.subtitle.style.color = '#f00';
+    }
+
+    closeRateModal() {
+        this.setState({rateModalIsOpen: false});
+    }
 
 
     render() {
@@ -43,6 +80,20 @@ export default class RestaurantCard extends React.Component {
                         <div>
                             {cuisineTypes}
                         </div>
+                        <button onClick={this.openRateModal}>Rate</button>
+                        <Modal
+                            isOpen={this.state.rateModalIsOpen}
+                            onAfterOpen={this.afterOpenModal}
+                            onRequestClose={this.closeRateModal}
+                            style={customStyles}
+                            contentLabel="Rate restaurant"
+                            shouldCloseOnOverlayClick={false}
+                        >
+                            <AddReviewForm
+                                restaurant={restaurant}
+                                onClose={this.closeRateModal}
+                            />
+                        </Modal>
                     </div>
                 </div>
             </div>

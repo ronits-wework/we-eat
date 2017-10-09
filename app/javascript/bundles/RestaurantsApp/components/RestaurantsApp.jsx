@@ -206,6 +206,7 @@ export default class RestaurantsApp extends React.Component {
                         onRequestClose={this.closeModal}
                         style={customStyles}
                         contentLabel="Add a Restaurant"
+                        shouldCloseOnOverlayClick={false}
                     >
                         <AddRestaurantForm
                             cuisines={this.state.cuisineTypes.map((cuisine) => {
