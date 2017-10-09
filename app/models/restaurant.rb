@@ -4,12 +4,16 @@
 #
 #  id            :integer          not null, primary key
 #  name          :string
-#  rating        :integer
+#  rating        :decimal
 #  speed         :integer
 #  accepts_10bis :boolean
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  address       :string
+#  logo          :string
+#  kosher        :boolean
+#  longitude     :decimal
+#  latitude      :decimal
 #
 
 class Restaurant < ApplicationRecord
@@ -18,7 +22,7 @@ class Restaurant < ApplicationRecord
   has_many :cuisine_types, through: :restaurant_cuisines
   has_many :reviews
 
-  validates :name, :address, presence: true
+  validates :name, presence: true
   validates :speed, inclusion: { in: WeEat::DELIVERY_TIMES }, allow_nil: true
   validates :name, length: { minimum: 2 }
   validates :rating, numericality: { greater_than_or_equal_to: WeEat::MIN_REVIEW_RATING,

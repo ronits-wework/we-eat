@@ -1,0 +1,20 @@
+.restaurant-card {
+
+  width: 20rem;
+  margin: 0 auto;
+
+  .restaurant-logo {
+    float: left;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+
+  .icon-10-bis {
+    height: 15px;
+    content:url(10bis.png);
+  }
+
+  .restaurant-icon {
+    margin: 5px;
+  }
+}

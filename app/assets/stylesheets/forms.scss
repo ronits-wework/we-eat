@@ -1,0 +1,63 @@
+
+.custom-form {
+
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-header {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .form-content {
+    flex: 1;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+
+    &.checkbox-input {
+      flex-direction: row;
+      align-items: center;
+
+      input {
+        margin-right: 7px;
+      }
+    }
+
+    &.required {
+      label:after {
+        content: ' *';
+      }
+    }
+
+  }
+
+  .validation-error {
+    color: red;
+    display: inline-block;
+    font-size: 14px;
+  }
+
+  .not-submitted .validation-error {
+    display: none;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+}

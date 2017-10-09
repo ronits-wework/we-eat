@@ -1,0 +1,53 @@
+
+.rating-star {
+
+  unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 25px;
+  height: 25px;
+  line-height: 25px;
+  position: relative;
+  padding: 0;
+  text-shadow: 0px 1px 0 #a2a2a2;
+  text-align: left !important;
+  word-wrap: initial;
+
+  &-colored {
+    padding: 0;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    .rated {
+      color: #e7711b;
+    }
+
+    .to-be-rated {
+      color: #f4a71d;
+    }
+  }
+  &-empty {
+    padding: 0;
+    display: block;
+  }
+
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+  body { margin: 50px; text-align: center; font-family: 'Open Sans', sans-serif; background: #f2fbff; }
+  em { font-style: italic; }
+  h1 { font-size: 24px; margin-bottom: 25px; font-weight: bold; text-transform: uppercase; }
+  h2 { font-size: 16px; margin-bottom: 15px;}
+
+}
+
+.stars-rating {
+  display: flex;
+  justify-content: center;
+}
+
+.stars-rating-filter {
+  display: flex;
+  justify-content: space-around;
+}
+

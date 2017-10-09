@@ -1,0 +1,91 @@
+
+.restaurants-app {
+
+  .top-part {
+    background-image: url(restaurant_tables.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+  }
+
+  .app-header {
+    text-align: center;
+    padding: 120px;
+    color: #1f6730;
+    font-family: fantasy;
+    font-size: 52px;
+    font-weight: bold;
+  }
+
+  .search-restaurants-wrapper {
+    padding: 20px;
+    text-align: center;
+
+    .search-input input {
+      width: 300px;
+    }
+
+  }
+
+  .restaurant-filters {
+    height: 100px;
+
+    .Select, .slider-wrapper {
+      width: 300px;
+    }
+
+    .stars-rating-filter-wrapper {
+      width: 100px;
+    }
+
+    .checkbox-wrapper input {
+      right: 7px;
+      position: relative;
+    }
+
+  }
+
+  .restaurant-filters > * {
+    float: left;
+    margin: 20px;
+  }
+
+  .restaurants-wrapper {
+    float: left;
+    overflow: hidden;
+    width: 400px;
+  }
+
+  .map-wrapper {
+    overflow: hidden;
+  }
+
+  .add-restaurant-btn {
+    background-color: rgb(31, 103, 48);
+    background-color: rgba(31, 103, 48, 0.5);
+
+    &:hover {
+      background-color: rgba(31, 103, 48, 0.7);
+    }
+
+    position: relative;
+    right: 200px;
+    top: 35px;
+    font-size: 18px;
+
+    border: none;
+    display: inline-block;
+    outline: 0;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+
+    border-radius: 50%;
+
+  }
+
+}
