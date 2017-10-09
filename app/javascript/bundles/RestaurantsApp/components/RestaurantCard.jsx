@@ -14,6 +14,7 @@ export default class RestaurantCard extends React.Component {
 
     static propTypes = {
         restaurant: PropTypes.object.isRequired,
+        onRate: PropTypes.func.isRequired,
     };
 
 

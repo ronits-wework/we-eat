@@ -22,7 +22,7 @@ class Restaurant < ApplicationRecord
   has_many :cuisine_types, through: :restaurant_cuisines
   has_many :reviews
 
-  validates :name, :address, presence: true
+  validates :name, presence: true
   validates :speed, inclusion: { in: WeEat::DELIVERY_TIMES }, allow_nil: true
   validates :name, length: { minimum: 2 }
   validates :rating, numericality: { greater_than_or_equal_to: WeEat::MIN_REVIEW_RATING,

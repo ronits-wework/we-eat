@@ -26,7 +26,7 @@ export default class AddRestaurantForm extends React.Component {
 
     static propTypes = {
         cuisines: PropTypes.array.isRequired,
-        onCancel: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired,
         deliveryTimes: PropTypes.array.isRequired,
     };
 
@@ -49,10 +49,38 @@ export default class AddRestaurantForm extends React.Component {
     }
 
     submit(model) {
-        if (!this.state.isFormValid) {
+        this.setState({isFormSubmitted: true});
+        if (this.state.isFormValid) {
+            const restaurant = {
+                restaurant: {
+                    name: model.restaurantName,
+                    speed: model.speed.value || null,
+                    cuisine_types: model.cuisineType ? [model.cuisineType.value] : [],
+                    accepts_10bis: model.accepts10bis || false,
+                    kosher: model.isKosher || false,
+                }
+            };
+
+            const data = JSON.stringify(restaurant);
+            const onClose = this.props.onClose;
+
+            fetch("/restaurants",
+                {
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(function (response) {
+                    onClose();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
         }
-        this.setState({isFormSubmitted: true});
     }
 
     render() {
@@ -61,7 +89,8 @@ export default class AddRestaurantForm extends React.Component {
         return (
             <div className="add-restaurant custom-form">
                 <h3 className="form-header">Add a Restaurant</h3>
-                <Formsy.Form onSubmit={this.submit} onValid={this.setValid} onInvalid={this.setInvalid} className={formClass}>
+                <Formsy.Form onSubmit={this.submit} onValid={this.setValid} onInvalid={this.setInvalid}
+                             className={formClass}>
                     <div className="form-content">
                         <TextInput
                             name="restaurantName"
@@ -92,7 +121,7 @@ export default class AddRestaurantForm extends React.Component {
                         />
                     </div>
                     <div className="footer">
-                        <button onClick={this.props.onCancel}>Cancel</button>
+                        <button onClick={this.props.onClose}>Cancel</button>
                         <button type="submit">Submit</button>
                     </div>
                 </Formsy.Form>

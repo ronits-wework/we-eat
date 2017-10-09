@@ -21,7 +21,7 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, 0)',
-        height: '500px',
+        height: '600px',
         width: '500px',
     }
 };
@@ -211,7 +211,7 @@ export default class RestaurantsApp extends React.Component {
                             cuisines={this.state.cuisineTypes.map((cuisine) => {
                                 return {value: cuisine.id, label: cuisine.cuisine};
                             })}
-                            onCancel={this.closeModal}
+                            onClose={this.closeModal}
                             deliveryTimes={RestaurantsApp.deliveryTimes.map((time) => {
                                 return {value: time, label: time}
                             })}
