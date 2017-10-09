@@ -27,6 +27,7 @@ export default class AddRestaurantForm extends React.Component {
     static propTypes = {
         cuisines: PropTypes.array.isRequired,
         onClose: PropTypes.func.isRequired,
+        onAdd: PropTypes.func.isRequired,
         deliveryTimes: PropTypes.array.isRequired,
     };
 
@@ -62,6 +63,7 @@ export default class AddRestaurantForm extends React.Component {
             };
 
             const data = JSON.stringify(restaurant);
+            const onAdd = this.props.onAdd;
             const onClose = this.props.onClose;
 
             fetch("/restaurants",
@@ -74,6 +76,7 @@ export default class AddRestaurantForm extends React.Component {
                     },
                 })
                 .then(function (response) {
+                    onAdd();
                     onClose();
                 })
                 .catch(function (error) {

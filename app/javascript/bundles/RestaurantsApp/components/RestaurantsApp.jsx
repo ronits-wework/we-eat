@@ -59,6 +59,7 @@ export default class RestaurantsApp extends React.Component {
         this.openModal = this.openModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.onAddRestaurant = this.onAddRestaurant.bind(this);
     }
 
     static get deliveryTimes() {
@@ -72,24 +73,8 @@ export default class RestaurantsApp extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/restaurants.json")
-            .then(res => {
-                return res.json();
-            }).then((restaurants) => {
-            this.setState({
-                restaurants,
-                displayedRestaurants: restaurants
-            });
-        });
-
-        fetch("/cuisine_types.json")
-            .then(res => {
-                return res.json();
-            }).then((cuisineTypes) => {
-            this.setState({
-                cuisineTypes
-            });
-        });
+        this.fetchRestaurants();
+        this.fetchCuisineTypes();
     }
 
 
@@ -106,6 +91,32 @@ export default class RestaurantsApp extends React.Component {
         this.setState({addRestModalIsOpen: false});
     }
 
+    onAddRestaurant() {
+        this.fetchRestaurants();
+    }
+
+    fetchRestaurants() {
+        fetch("/restaurants.json")
+            .then(res => {
+                return res.json();
+            }).then((restaurants) => {
+            this.setState({
+                    restaurants
+                }, this.filterRestaurants
+            );
+        });
+    }
+
+    fetchCuisineTypes() {
+        fetch("/cuisine_types.json")
+            .then(res => {
+                return res.json();
+            }).then((cuisineTypes) => {
+            this.setState({
+                cuisineTypes
+            });
+        });
+    }
 
     searchRestaurantUpdated(term) {
         this.setState({restaurantFilter: term}, this.filterRestaurants);
@@ -216,6 +227,7 @@ export default class RestaurantsApp extends React.Component {
                             deliveryTimes={RestaurantsApp.deliveryTimes.map((time) => {
                                 return {value: time, label: time}
                             })}
+                            onAdd={this.onAddRestaurant}
                         />
                     </Modal>
 
