@@ -5,7 +5,6 @@ import TextInput from '../../Forms/components/TextInput';
 import StarsRatingFilter from "../../StarsRating/components/StarsRatingFilter"
 
 
-
 export default class AddReviewForm extends React.Component {
     constructor(props) {
         super(props);
@@ -94,7 +93,9 @@ export default class AddReviewForm extends React.Component {
                             label="Comment"
                         />
                         <StarsRatingFilter
-                            minRatingFiltered={(rating) => {this.setState({userRating: rating})}}
+                            minRatingFiltered={(rating) => {
+                                this.setState({userRating: rating})
+                            }}
                         />
                     </div>
                     <div className="footer">

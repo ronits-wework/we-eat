@@ -239,11 +239,9 @@ export default class RestaurantsApp extends React.Component {
                                 marks={sliderTimes}
                                 onAfterChange={this.maxSpeedFiltered}/>
                     </div>
-                    <div className="stars-rating-filter-wrapper">
-                        <StarsRatingFilter
-                            minRatingFiltered={this.minRatingFiltered}
-                        />
-                    </div>
+                    <StarsRatingFilter
+                        minRatingFiltered={this.minRatingFiltered}
+                    />
                     <CheckboxFilter
                         onCheckChange={this.is10bisFiltered}
                         isChecked={this.state.is10bisFilter}

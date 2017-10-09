@@ -46,8 +46,14 @@
   justify-content: center;
 }
 
-.stars-rating-filter {
-  display: flex;
-  justify-content: space-around;
+.stars-rating-filter-wrapper {
+  width: 100px;
+  margin: auto;
+
+  .stars-rating-filter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 
