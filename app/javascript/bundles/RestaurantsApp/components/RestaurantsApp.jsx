@@ -59,7 +59,7 @@ export default class RestaurantsApp extends React.Component {
         this.openModal = this.openModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.onAddRestaurant = this.onAddRestaurant.bind(this);
+        this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
     }
 
     static get deliveryTimes() {
@@ -91,7 +91,7 @@ export default class RestaurantsApp extends React.Component {
         this.setState({addRestModalIsOpen: false});
     }
 
-    onAddRestaurant() {
+    onRestaurantsChange() {
         this.fetchRestaurants();
     }
 
@@ -227,7 +227,7 @@ export default class RestaurantsApp extends React.Component {
                             deliveryTimes={RestaurantsApp.deliveryTimes.map((time) => {
                                 return {value: time, label: time}
                             })}
-                            onAdd={this.onAddRestaurant}
+                            onAdd={this.onRestaurantsChange}
                         />
                     </Modal>
 
@@ -268,7 +268,10 @@ export default class RestaurantsApp extends React.Component {
                     />
                 </div>
                 <div className="restaurants-wrapper">
-                    <Restaurants restaurants={this.state.displayedRestaurants}/>
+                    <Restaurants
+                        restaurants={this.state.displayedRestaurants}
+                        onRestaurantsChange={this.onRestaurantsChange}
+                    />
                 </div>
                 <div className="map-wrapper">
                 </div>

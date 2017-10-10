@@ -17,6 +17,7 @@ export default class AddRestaurantForm extends React.Component {
         this.state = {
             isFormValid: false,
             isFormSubmitted: false,
+            isAddingRestaurant: false,
         }
         this.submit = this.submit.bind(this);
         this.setValid = this.setValid.bind(this);
@@ -52,6 +53,7 @@ export default class AddRestaurantForm extends React.Component {
     submit(model) {
         this.setState({isFormSubmitted: true});
         if (this.state.isFormValid) {
+            this.setState({isAddingRestaurant: true});
             const restaurant = {
                 restaurant: {
                     name: model.restaurantName,
@@ -125,7 +127,7 @@ export default class AddRestaurantForm extends React.Component {
                     </div>
                     <div className="footer">
                         <button onClick={this.props.onClose}>Cancel</button>
-                        <button type="submit">Submit</button>
+                        <button type="submit" disabled={this.state.isAddingRestaurant}>Submit</button>
                     </div>
                 </Formsy.Form>
             </div>

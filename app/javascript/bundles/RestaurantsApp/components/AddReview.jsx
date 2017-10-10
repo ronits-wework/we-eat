@@ -12,6 +12,7 @@ export default class AddReviewForm extends React.Component {
             isFormValid: false,
             isFormSubmitted: false,
             userRating: 0,
+            isAddingReview: false,
         }
         this.submit = this.submit.bind(this);
         this.setValid = this.setValid.bind(this);
@@ -22,6 +23,7 @@ export default class AddReviewForm extends React.Component {
     static propTypes = {
         restaurant: PropTypes.object.isRequired,
         onClose: PropTypes.func.isRequired,
+        onAdd: PropTypes.func.isRequired,
     };
 
     getInitialState() {
@@ -45,7 +47,9 @@ export default class AddReviewForm extends React.Component {
     submit(model) {
         this.setState({isFormSubmitted: true});
         if (this.state.isFormValid) {
-            this.props.onClose();
+            this.setState({isAddingReview: true});
+            const onClose = this.props.onClose;
+            const onAdd = this.props.onAdd;
             const review = {
                 review: {
                     rating: this.state.userRating,
@@ -66,7 +70,8 @@ export default class AddReviewForm extends React.Component {
                     },
                 })
                 .then(function (response) {
-
+                    onClose();
+                    onAdd();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -100,7 +105,7 @@ export default class AddReviewForm extends React.Component {
                     </div>
                     <div className="footer">
                         <button onClick={this.props.onClose}>Cancel</button>
-                        <button type="submit">Submit</button>
+                        <button type="submit" disabled={this.state.isAddingReview}>Submit</button>
                     </div>
                 </Formsy.Form>
             </div>

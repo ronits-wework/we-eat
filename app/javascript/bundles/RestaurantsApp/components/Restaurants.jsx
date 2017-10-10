@@ -14,6 +14,7 @@ export default class Restaurants extends React.Component {
 
     static propTypes = {
         restaurants: PropTypes.array.isRequired,
+        onRestaurantsChange: PropTypes.func.isRequired,
     };
 
 
@@ -21,7 +22,10 @@ export default class Restaurants extends React.Component {
         const restaurantList = this.props.restaurants.map((restaurant) => {
             return (
                 <div key={restaurant.id} className="restaurant-card-wrapper">
-                    <RestaurantCard restaurant={restaurant}/>
+                    <RestaurantCard
+                        restaurant={restaurant}
+                        onRestaurantChange={this.props.onRestaurantsChange}
+                    />
                 </div>
             )
         });

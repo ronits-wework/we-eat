@@ -105,6 +105,12 @@ export default class StarsRating extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.interactiveRating && nextProps.rating != this.props.rating) {
+            this.setState({rating: nextProps.rating});
+        }
+    }
+
     render() {
         let stars = [];
         const starClass = this.state.isHoverMode ? "to-be-rated" : "rated";

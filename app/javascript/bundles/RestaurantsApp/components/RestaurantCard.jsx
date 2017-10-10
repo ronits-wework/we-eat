@@ -38,6 +38,7 @@ export default class RestaurantCard extends React.Component {
 
     static propTypes = {
         restaurant: PropTypes.object.isRequired,
+        onRestaurantChange: PropTypes.func.isRequired,
     };
 
     openRateModal() {
@@ -60,40 +61,58 @@ export default class RestaurantCard extends React.Component {
         return (
             <div key={restaurant.id} className="card restaurant-card">
                 <div className="card-block text-center">
-                    <img className="restaurant-logo" src={restaurant.logo}/>
-                    <h4 className="card-title">{restaurant.name}</h4>
+                    <div className="image-section">
+                        <img className="restaurant-logo" src={restaurant.logo}/>
+                    </div>
+                    <div className="details-section">
+                        <h4 className="card-title">{restaurant.name}</h4>
 
-                    <div className="card-body">
-                        <div>{restaurant.address}</div>
-                        {restaurant.speed && (<div>{restaurant.speed} minute delivery</div>)}
-                        {restaurant.kosher === true && (<div>Kosher</div>)}
-                        {restaurant.rating && (
-                            <StarsRating
-                                rating={parseFloat(restaurant.rating)}
-                                interactiveRating={false}
-                                numStars={MAX_RESTAURANT_RATING}
-                            />
-                        )}
-                        {restaurant.accepts_10bis && (
-                            <img className="icon-10-bis restaurant-icon"/>
-                        )}
-                        <div>
-                            {cuisineTypes}
+                        <div className="card-body">
+                            <div>{restaurant.address}</div>
+                            {restaurant.speed && (<div>{restaurant.speed} minute delivery</div>)}
+                            <div>
+                                {cuisineTypes}
+                            </div>
+                            <div className="rest-sub-section">
+                                <div className="rest-sub-item">
+                                    {restaurant.kosher === true && (
+                                        <span>Kosher</span>
+                                    )}
+                                </div>
+                                <div className="rest-sub-item">
+                                    {restaurant.accepts_10bis && (
+                                        <img className="icon-10-bis restaurant-icon"/>
+                                    )}
+                                </div>
+                                <div className="rest-sub-item">
+                                    {restaurant.rating && (
+                                        <StarsRating
+                                            rating={parseFloat(restaurant.rating)}
+                                            interactiveRating={false}
+                                            numStars={MAX_RESTAURANT_RATING}
+                                        />
+                                    )}
+                                </div>
+                                <div className="rest-sub-item">
+                                    <button onClick={this.openRateModal}>Rate</button>
+
+                                    <Modal
+                                        isOpen={this.state.rateModalIsOpen}
+                                        onAfterOpen={this.afterOpenModal}
+                                        onRequestClose={this.closeRateModal}
+                                        style={customStyles}
+                                        contentLabel="Rate restaurant"
+                                        shouldCloseOnOverlayClick={false}
+                                    >
+                                        <AddReviewForm
+                                            restaurant={restaurant}
+                                            onClose={this.closeRateModal}
+                                            onAdd={this.props.onRestaurantChange}
+                                        />
+                                    </Modal>
+                                </div>
+                            </div>
                         </div>
-                        <button onClick={this.openRateModal}>Rate</button>
-                        <Modal
-                            isOpen={this.state.rateModalIsOpen}
-                            onAfterOpen={this.afterOpenModal}
-                            onRequestClose={this.closeRateModal}
-                            style={customStyles}
-                            contentLabel="Rate restaurant"
-                            shouldCloseOnOverlayClick={false}
-                        >
-                            <AddReviewForm
-                                restaurant={restaurant}
-                                onClose={this.closeRateModal}
-                            />
-                        </Modal>
                     </div>
                 </div>
             </div>

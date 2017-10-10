@@ -3,18 +3,53 @@
   width: 20rem;
   margin: 0 auto;
 
-  .restaurant-logo {
-    float: left;
-    margin-top: 5px;
-    margin-left: 5px;
+  .image-section {
+    width: 100px;
   }
 
-  .icon-10-bis {
-    height: 15px;
-    content:url(10bis.png);
+  .card-block {
+    display: flex;
+    flex-direction: row;
+
+    .card-title {
+      margin-top: 25px;
+      margin-bottom: 5px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .restaurant-logo {
+      margin: 5px;
+      width: 100%;
+    }
+
+    .details-section {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .rest-sub-section {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+
+      .rest-sub-item {
+        width: 50%;
+      }
+    }
+
+    .icon-10-bis {
+      height: 15px;
+      content:url(10bis.png);
+    }
+
+    .restaurant-icon {
+      margin: 5px;
+    }
   }
 
-  .restaurant-icon {
-    margin: 5px;
-  }
 }
