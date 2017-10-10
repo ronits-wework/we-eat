@@ -1,0 +1,31 @@
+$icon-height:    20px;
+$icon-height-hovered: 30px;
+
+.map-marker {
+  position: relative;
+  top: -$icon-height;
+  left: -10px;
+
+  &.hovered {
+    top: -$icon-height-hovered;
+    left: -15px;
+
+    .marker-icon {
+      height: $icon-height-hovered;
+    }
+    .marker-text {
+      font-size: 24px;
+    }
+  }
+
+  .marker-icon {
+    height: $icon-height;
+    content:url(map_marker.svg);
+  }
+
+  .marker-text {
+    font-size: 16px;
+    white-space: nowrap;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  }
+}
