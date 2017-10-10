@@ -99,11 +99,11 @@ export default class RestaurantsApp extends React.Component {
         fetch("/restaurants.json")
             .then(res => res.json())
             .then((restaurants) => {
-            this.setState({
-                    restaurants
-                }, this.filterRestaurants
-            );
-        });
+                this.setState({
+                        restaurants
+                    }, this.filterRestaurants
+                );
+            });
     }
 
     fetchCuisineTypes() {
@@ -251,7 +251,7 @@ export default class RestaurantsApp extends React.Component {
                                 onAfterChange={this.maxSpeedFiltered}/>
                     </div>
                     <StarsRatingFilter
-                        minRatingFiltered={this.minRatingFiltered}
+                        onRating={this.minRatingFiltered}
                     />
                     <CheckboxFilter
                         onCheckChange={this.is10bisFiltered}

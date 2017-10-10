@@ -13,7 +13,7 @@ export default class StarsRatingFilter extends React.Component {
     }
 
     static propTypes = {
-        minRatingFiltered: PropTypes.func.isRequired,
+        onRating: PropTypes.func.isRequired,
     };
 
     render() {
@@ -26,7 +26,7 @@ export default class StarsRatingFilter extends React.Component {
                         }}
                         numStars={MAX_RESTAURANT_RATING}
                         interactiveRating={true}
-                        ratingCallback={this.props.minRatingFiltered.bind(this)}
+                        ratingCallback={this.props.onRating.bind(this)}
                     />
                     <button type="button" className="close" aria-label="Close"
                             onClick={() => {

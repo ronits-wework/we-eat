@@ -99,7 +99,7 @@ export default class AddReviewForm extends React.Component {
                             label="Comment"
                         />
                         <StarsRatingFilter
-                            minRatingFiltered={(rating) => {
+                            onRating={(rating) => {
                                 this.setState({userRating: rating})
                             }}
                         />
