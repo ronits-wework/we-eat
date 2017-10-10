@@ -97,9 +97,8 @@ export default class RestaurantsApp extends React.Component {
 
     fetchRestaurants() {
         fetch("/restaurants.json")
-            .then(res => {
-                return res.json();
-            }).then((restaurants) => {
+            .then(res => res.json())
+            .then((restaurants) => {
             this.setState({
                     restaurants
                 }, this.filterRestaurants
@@ -267,13 +266,15 @@ export default class RestaurantsApp extends React.Component {
                         inputName={"isKosher"}
                     />
                 </div>
-                <div className="restaurants-wrapper">
-                    <Restaurants
-                        restaurants={this.state.displayedRestaurants}
-                        onRestaurantsChange={this.onRestaurantsChange}
-                    />
-                </div>
-                <div className="map-wrapper">
+                <div className="bottom-part">
+                    <div className="restaurants-wrapper">
+                        <Restaurants
+                            restaurants={this.state.displayedRestaurants}
+                            onRestaurantsChange={this.onRestaurantsChange}
+                        />
+                    </div>
+                    <div className="map-wrapper">
+                    </div>
                 </div>
             </div>
         );

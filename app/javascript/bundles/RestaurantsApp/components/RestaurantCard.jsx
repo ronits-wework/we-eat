@@ -75,7 +75,7 @@ export default class RestaurantCard extends React.Component {
                             </div>
                             <div className="rest-sub-section">
                                 <div className="rest-sub-item">
-                                    {restaurant.kosher === true && (
+                                    {restaurant.kosher && (
                                         <span>Kosher</span>
                                     )}
                                 </div>

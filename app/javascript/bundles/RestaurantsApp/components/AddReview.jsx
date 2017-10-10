@@ -3,6 +3,7 @@ import React from 'react';
 import Formsy from 'formsy-react';
 import TextInput from '../../Forms/components/TextInput';
 import StarsRatingFilter from "../../StarsRating/components/StarsRatingFilter"
+import cx from 'classnames';
 
 
 export default class AddReviewForm extends React.Component {
@@ -12,7 +13,7 @@ export default class AddReviewForm extends React.Component {
             isFormValid: false,
             isFormSubmitted: false,
             userRating: 0,
-            isAddingReview: false,
+            isSubmitting: false,
         }
         this.submit = this.submit.bind(this);
         this.setValid = this.setValid.bind(this);
@@ -25,12 +26,6 @@ export default class AddReviewForm extends React.Component {
         onClose: PropTypes.func.isRequired,
         onAdd: PropTypes.func.isRequired,
     };
-
-    getInitialState() {
-        return {
-            isFormValid: false
-        }
-    }
 
     setValid() {
         this.setState({
@@ -47,7 +42,7 @@ export default class AddReviewForm extends React.Component {
     submit(model) {
         this.setState({isFormSubmitted: true});
         if (this.state.isFormValid) {
-            this.setState({isAddingReview: true});
+            this.setState({isSubmitting: true});
             const onClose = this.props.onClose;
             const onAdd = this.props.onAdd;
             const review = {
@@ -74,20 +69,26 @@ export default class AddReviewForm extends React.Component {
                     onAdd();
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }
     }
 
     render() {
-        let formClass = this.state.isFormSubmitted ? "submitted" : "not-submitted";
-        formClass += " form";
+        const formClass = cx('form', {
+            'submitted': this.state.isFormSubmitted,
+            'not-submitted': !this.state.isFormSubmitted
+        });
         return (
             <div className="add-review custom-form">
                 <h3 className="form-header">Rate {this.props.restaurant.name}</h3>
-                <Formsy.Form onSubmit={this.submit} onValid={this.setValid} onInvalid={this.setInvalid}
-                             className={formClass}>
+                <Formsy.Form
+                    onSubmit={this.submit}
+                    onValid={this.setValid}
+                    onInvalid={this.setInvalid}
+                    className={formClass}
+                >
                     <div className="form-content">
                         <TextInput
                             name="userName"
@@ -105,7 +106,7 @@ export default class AddReviewForm extends React.Component {
                     </div>
                     <div className="footer">
                         <button onClick={this.props.onClose}>Cancel</button>
-                        <button type="submit" disabled={this.state.isAddingReview}>Submit</button>
+                        <button type="submit" disabled={this.state.isSubmitting}>Submit</button>
                     </div>
                 </Formsy.Form>
             </div>
