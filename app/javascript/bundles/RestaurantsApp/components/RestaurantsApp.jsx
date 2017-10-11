@@ -7,7 +7,7 @@ import Slider from 'rc-slider';
 import StarsRatingFilter from "../../StarsRating/components/StarsRatingFilter";
 import CheckboxFilter from "../../Filters/components/CheckboxFilter"
 import Modal from 'react-modal';
-import MyGoogleMap from '../../Map/components/MyGoogleMap';
+import RestaurantsMap from '../../Map/components/RestaurantsMap';
 
 
 const MIN_RESTAURANT_FILTER_LENGTH = 2;
@@ -275,20 +275,14 @@ export default class RestaurantsApp extends React.Component {
                         />
                     </div>
                     <div className="map-wrapper">
-                        <MyGoogleMap
-                            markers={this.state.displayedRestaurants.map((restaurant) => {
-                                if (restaurant.latitude === null || restaurant.longitude === null) {
-                                    return false;
+                        <RestaurantsMap
+                            restaurants={this.state.displayedRestaurants.reduce((map, restaurant) => {
+                                if (restaurant.latitude !== null || restaurant.longitude !== null) {
+                                    map[restaurant.id] = restaurant;
                                 }
-                                return {
-                                    location: {
-                                        lat: restaurant.latitude,
-                                        lng: restaurant.longitude
-                                    },
-                                    title: restaurant.name,
-                                    id: restaurant.id
-                                }
-                            })}
+                                return map;
+                            }, {})}
+                            onRestaurantsChange={this.onRestaurantsChange}
                         />
                     </div>
                 </div>

@@ -28,4 +28,12 @@ $icon-height-hovered: 30px;
     white-space: nowrap;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
   }
+
+  .map-marker-tooltip {
+    pointer-events: auto !important;
+    &:hover {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  }
 }

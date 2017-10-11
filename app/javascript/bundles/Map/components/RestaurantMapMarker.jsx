@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactTooltip from 'react-tooltip';
 import cx from 'classnames';
+import RestaurantCard from "../../RestaurantsApp/components/RestaurantCard";
+import ReactTooltip from 'react-tooltip';
 
-export default class MapMarker extends React.Component {
+export default class RestaurantMapMarker extends React.Component {
     constructor(props) {
         super(props);
 
@@ -17,13 +18,12 @@ export default class MapMarker extends React.Component {
 
     static propTypes = {
         text: PropTypes.string,
-        //ratingPercent: PropTypes.number,
+        restaurant: PropTypes.object.isRequired,
+        onRestaurantsChange: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
         text: "",
-        //starClass: "",
-        //ratingPercent: 0,
     };
 
     onMouseEnter() {
@@ -42,13 +42,27 @@ export default class MapMarker extends React.Component {
             <div className={markerClass}
                  onMouseEnter={this.onMouseEnter}
                  onMouseLeave={this.onMouseLeave}
-                 data-tip={this.props.text}
+                 data-tip=""
+                 data-for="restaurants-map-tooltip"
             >
                 <img className="marker-icon" />
                 <div className="marker-text">
                     {this.props.text}
                 </div>
-                <ReactTooltip type="light" effect='solid' />
+                <ReactTooltip
+                    id="restaurants-map-tooltip"
+                    class="map-marker-tooltip"
+                    type="light"
+                    effect='solid'
+                    delayHide={200}
+                >
+                    {this.props.restaurant && this.state.isHovered && (
+                        <RestaurantCard
+                            restaurant={this.props.restaurant}
+                            onRestaurantChange={this.props.onRestaurantsChange}
+                        />
+                    )}
+                </ReactTooltip>
             </div>
 
         )
