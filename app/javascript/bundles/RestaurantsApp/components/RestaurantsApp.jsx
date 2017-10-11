@@ -45,7 +45,7 @@ export default class RestaurantsApp extends React.Component {
             restaurantFilter: "",
             minRating: null,
             cuisineTypeFilter: null,
-            maxSpeed: null,
+            maxSpeed: 0,
             is10bisFilter: false,
             isKosherFilter: false,
             addRestModalIsOpen: false,
@@ -62,6 +62,7 @@ export default class RestaurantsApp extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
+        this.maxSpeedChanged = this.maxSpeedChanged.bind(this);
     }
 
     static get deliveryTimes() {
@@ -119,12 +120,16 @@ export default class RestaurantsApp extends React.Component {
         });
     }
 
+    maxSpeedChanged (speed) {
+        this.setState({maxSpeed: speed});
+    }
+
     clearFilters() {
         this.setState({
             restaurantFilter: "",
             minRating: null,
             cuisineTypeFilter: null,
-            maxSpeed: null,
+            maxSpeed: 0,
             is10bisFilter: false,
             isKosherFilter: false
         }, this.filterRestaurants);
@@ -207,6 +212,7 @@ export default class RestaurantsApp extends React.Component {
         this.setState({displayedRestaurants: restaurants});
     }
 
+
     render() {
         const sliderTimes = {};
         RestaurantsApp.deliveryTimes.map((time) => sliderTimes[time] = time);
@@ -265,7 +271,9 @@ export default class RestaurantsApp extends React.Component {
                                 max={MAX_DELIVERY_TIME}
                                 step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
+                                onChange={this.maxSpeedChanged}
                                 onAfterChange={this.maxSpeedFiltered}
+                                value={this.state.maxSpeed}
                         />
                     </div>
                     <StarsRatingFilter
