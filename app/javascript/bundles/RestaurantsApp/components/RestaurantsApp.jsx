@@ -276,12 +276,12 @@ export default class RestaurantsApp extends React.Component {
                     </div>
                     <div className="map-wrapper">
                         <RestaurantsMap
-                            restaurants={this.state.displayedRestaurants.reduce((map, restaurant) => {
-                                if (restaurant.latitude !== null || restaurant.longitude !== null) {
-                                    map[restaurant.id] = restaurant;
+                            restaurants={this.state.displayedRestaurants.filter((restaurant) => {
+                                if (restaurant.latitude === null || restaurant.longitude === null) {
+                                    return false;
                                 }
-                                return map;
-                            }, {})}
+                                return true;
+                            })}
                             onRestaurantsChange={this.onRestaurantsChange}
                         />
                     </div>

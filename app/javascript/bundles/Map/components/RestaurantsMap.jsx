@@ -6,20 +6,34 @@ import RestaurantMapMarker from './RestaurantMapMarker';
 
 export default class RestaurantsMap extends React.Component {
     static propTypes = {
-        center: PropTypes.array,
         zoom: PropTypes.number,
-        restaurants: PropTypes.object,
+        restaurants: PropTypes.array,
         onRestaurantsChange: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
-        center: [32.078668, 34.781235], // TODO: set according to location
         zoom: 14,
         restaurants: {},
     };
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            center: [32.078668, 34.781235],
+            initDefaultCenter: false,
+        }
+    }
+
+    componentWillMount() {
+        if (!this.state.initDefaultCenter && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                this.setState({
+                    center: [position.coords.latitude, position.coords.longitude],
+                    initDefaultCenter: true
+                });
+            });
+        }
     }
 
 
@@ -28,11 +42,10 @@ export default class RestaurantsMap extends React.Component {
             <GoogleMap
                 resetBoundsOnResize
                 // apiKey={YOUR_GOOGLE_MAP_API_KEY} // set if you need stats etc ...
-                center={this.props.center}
+                center={this.state.center}
                 zoom={this.props.zoom}
             >
-                {Object.keys(this.props.restaurants).map((id) => {
-                    const restaurant = this.props.restaurants[id];
+                {this.props.restaurants.map((restaurant) => {
                     return (<RestaurantMapMarker
                         key={restaurant.id}
                         lat={restaurant.latitude}
