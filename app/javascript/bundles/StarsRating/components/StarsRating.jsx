@@ -36,7 +36,7 @@ export default class StarsRating extends React.Component {
         interactiveRating: PropTypes.bool,
         rating: PropTypes.number,
         numStars: PropTypes.number.isRequired,
-        ratingCallback: PropTypes.func,
+        onRating: PropTypes.func,
     };
 
     static defaultProps = {
@@ -77,8 +77,8 @@ export default class StarsRating extends React.Component {
             rating: newRating,
             isHoverMode: false
         });
-        if (this.props.ratingCallback) {
-            this.props.ratingCallback(newRating);
+        if (this.props.onRating) {
+            this.props.onRating(newRating);
         }
     }
 
@@ -98,16 +98,12 @@ export default class StarsRating extends React.Component {
         this.setState({isHoverMode: false});
     }
 
-    setRating(rating) {
-        this.setState({rating: rating});
-        if (this.props.ratingCallback) {
-            this.props.ratingCallback(rating);
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
-        if (!this.props.interactiveRating && nextProps.rating != this.props.rating) {
+        if (nextProps.rating != this.state.rating) {
             this.setState({rating: nextProps.rating});
+            if (this.props.onRating) {
+                this.props.onRating(nextProps.rating);
+            }
         }
     }
 

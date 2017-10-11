@@ -9,28 +9,34 @@ export default class StarsRatingFilter extends React.Component {
 
         this.state = {
             isFiltering: false,
+            rating: 0,
         }
     }
 
     static propTypes = {
         onRating: PropTypes.func.isRequired,
+        rating: PropTypes.number
     };
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.rating != this.props.rating) {
+            this.setState({ rating: nextProps.rating});
+        }
+    }
 
     render() {
         return (
             <div className="stars-rating-filter-wrapper">
                 <div className="stars-rating-filter">
                     <StarsRating
-                        ref={instance => {
-                            this.starsRating = instance;
-                        }}
                         numStars={MAX_RESTAURANT_RATING}
                         interactiveRating={true}
-                        ratingCallback={this.props.onRating.bind(this)}
+                        onRating={this.props.onRating.bind(this)}
+                        rating={this.state.rating}
                     />
                     <button type="button" className="close" aria-label="Close"
                             onClick={() => {
-                                this.starsRating.setRating(0)
+                                this.setState({ rating: 0});
                             }}>
                         <span aria-hidden="true">&times;</span>
                     </button>

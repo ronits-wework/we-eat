@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 import RestaurantsMap from '../../Map/components/RestaurantsMap';
 
 
-const MIN_RESTAURANT_FILTER_LENGTH = 2;
+const MIN_RESTAURANT_FILTER_LENGTH = 1;
 const MAX_DELIVERY_TIME = 120;
 const DELIVERY_INTERVAL = 15;
 
@@ -42,7 +42,7 @@ export default class RestaurantsApp extends React.Component {
             restaurants: [],
             displayedRestaurants: [],
             cuisineTypes: [],
-            restaurantFilter: null,
+            restaurantFilter: "",
             minRating: null,
             cuisineTypeFilter: null,
             maxSpeed: null,
@@ -61,6 +61,7 @@ export default class RestaurantsApp extends React.Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
+        this.clearFilters = this.clearFilters.bind(this);
     }
 
     static get deliveryTimes() {
@@ -116,6 +117,17 @@ export default class RestaurantsApp extends React.Component {
                 cuisineTypes
             });
         });
+    }
+
+    clearFilters() {
+        this.setState({
+            restaurantFilter: "",
+            minRating: null,
+            cuisineTypeFilter: null,
+            maxSpeed: null,
+            is10bisFilter: false,
+            isKosherFilter: false
+        }, this.filterRestaurants);
     }
 
     searchRestaurantUpdated(term) {
@@ -206,7 +218,13 @@ export default class RestaurantsApp extends React.Component {
                            className="add-restaurant-btn">+</a>
                         <SearchInput className="search-input"
                                      placeholder="Search restaurants"
-                                     onChange={this.searchRestaurantUpdated}/>
+                                     onChange={this.searchRestaurantUpdated}
+                                     value={this.state.restaurantFilter}
+                        />
+                        <img
+                            className="clear-filters-btn"
+                            onClick={this.clearFilters}
+                        />
                     </div>
 
 
@@ -247,10 +265,12 @@ export default class RestaurantsApp extends React.Component {
                                 max={MAX_DELIVERY_TIME}
                                 step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
-                                onAfterChange={this.maxSpeedFiltered}/>
+                                onAfterChange={this.maxSpeedFiltered}
+                        />
                     </div>
                     <StarsRatingFilter
                         onRating={this.minRatingFiltered}
+                        rating={this.state.minRating}
                     />
                     <CheckboxFilter
                         onCheckChange={this.is10bisFiltered}
