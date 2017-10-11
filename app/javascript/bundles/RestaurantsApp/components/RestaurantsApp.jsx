@@ -201,7 +201,6 @@ export default class RestaurantsApp extends React.Component {
         return (
             <div className="restaurants-app">
                 <div className="top-part">
-                    <h1 className="app-header">Eat What You Love</h1>
                     <div className="search-restaurants-wrapper">
                         <a onClick={this.openModal}
                            className="add-restaurant-btn">+</a>
@@ -230,7 +229,6 @@ export default class RestaurantsApp extends React.Component {
                             onAdd={this.onRestaurantsChange}
                         />
                     </Modal>
-
                 </div>
 
                 <div className="restaurant-filters">

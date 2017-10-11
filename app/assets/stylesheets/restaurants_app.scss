@@ -1,11 +1,14 @@
 
+
 .restaurants-app {
 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: -113px;
+
   .top-part {
-    background-image: url(restaurant_tables.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100%;
+    padding-bottom: 40px;
   }
 
   .bottom-part {
@@ -13,17 +16,7 @@
     flex-direction: row;
   }
 
-  .app-header {
-    text-align: center;
-    padding: 120px;
-    color: #1f6730;
-    font-family: fantasy;
-    font-size: 52px;
-    font-weight: bold;
-  }
-
   .search-restaurants-wrapper {
-    padding: 20px;
     text-align: center;
 
     .search-input input {
