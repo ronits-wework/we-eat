@@ -52,8 +52,8 @@ export default class AddRestaurantForm extends React.Component {
             const restaurant = {
                 restaurant: {
                     name: model.restaurantName,
-                    speed: model.speed.value || null,
-                    cuisine_types: model.cuisineType ? [model.cuisineType.value] : [],
+                    speed: model.speed ? model.speed.value : null,
+                    cuisine_types: model.cuisineType ? model.cuisineType.map((cuisine) => cuisine.value) : [],
                     accepts_10bis: model.accepts10bis || false,
                     kosher: model.isKosher || false,
                 }
@@ -111,8 +111,9 @@ export default class AddRestaurantForm extends React.Component {
                             required/>
                         <DropdownInput
                             name="cuisineType"
-                            label="Choose a Cuisine"
+                            label="Choose Cuisines"
                             options={this.props.cuisines}
+                            multi={true}
                         />
                         <DropdownInput
                             name="speed"

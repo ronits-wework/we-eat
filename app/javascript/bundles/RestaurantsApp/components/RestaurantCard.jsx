@@ -58,6 +58,7 @@ export default class RestaurantCard extends React.Component {
     render() {
         const restaurant = this.props.restaurant;
         const cuisineTypes = restaurant.cuisine_types.map((cuisineType) => cuisineType.cuisine);
+        const cuisineStr = cuisineTypes.join(", ");
         return (
             <div key={restaurant.id} className="card restaurant-card">
                 <div className="card-block text-center">
@@ -68,10 +69,10 @@ export default class RestaurantCard extends React.Component {
                         <h4 className="card-title">{restaurant.name}</h4>
 
                         <div className="card-body">
-                            <div>{restaurant.address}</div>
+                            <div className="rest-row">{restaurant.address}</div>
                             {restaurant.speed && (<div>{restaurant.speed} minute delivery</div>)}
-                            <div>
-                                {cuisineTypes}
+                            <div className="rest-row">
+                                {cuisineStr}
                             </div>
                             <div className="rest-sub-section">
                                 <div className="rest-sub-item">

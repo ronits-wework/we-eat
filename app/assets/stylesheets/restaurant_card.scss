@@ -31,6 +31,10 @@
       width: 100%;
     }
 
+    .rest-row {
+      margin-bottom: 5px;
+    }
+
     .rest-sub-section {
       display: flex;
       flex-direction: row;
@@ -39,6 +43,7 @@
 
       .rest-sub-item {
         width: 50%;
+        margin-bottom: 5px;
       }
     }
 
