@@ -1,39 +1,95 @@
 $icon-height:    20px;
 $icon-height-hovered: 30px;
 
+$map-marker-left: 10px;
+$map-marker-left-hover: 15px;
+
+$map-marker-text: 16px;
+$map-marker-text-hover: 24px;
+
+$hover-animation-duration: 200ms;
+
+@mixin hover-animation() {
+  -webkit-transition: $hover-animation-duration; /* Safari */
+  transition: $hover-animation-duration;
+  transition-timing-function: ease-in;
+}
+
 .map-marker {
   position: relative;
   top: -$icon-height;
-  left: -10px;
+  left: -$map-marker-left;
 
-  &.hovered {
-    top: -$icon-height-hovered;
-    left: -15px;
-
-    .marker-icon {
-      height: $icon-height-hovered;
-    }
-    .marker-text {
-      font-size: 24px;
-    }
-  }
+  @include hover-animation();
 
   .marker-icon {
     height: $icon-height;
     content:url(map_marker.svg);
+
+    @include hover-animation();
   }
 
   .marker-text {
-    font-size: 16px;
+    font-size: $map-marker-text;
     white-space: nowrap;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+
+    @include hover-animation();
   }
+
+  &.hovered {
+    top: -$icon-height-hovered;
+    left: -$map-marker-left-hover;
+
+    @include hover-animation();
+
+    .marker-icon {
+      height: $icon-height-hovered;
+
+      @include hover-animation();
+    }
+    .marker-text {
+      font-size: $map-marker-text-hover;
+
+      @include hover-animation();
+    }
+  }
+
 
   .map-marker-tooltip {
     pointer-events: auto !important;
     &:hover {
       visibility: visible !important;
       opacity: 1 !important;
+    }
+  }
+
+  @keyframes marker-hover-offset {
+    from {
+      top: -$icon-height;
+      left: -$map-marker-left;
+    }
+    to {
+      top: -$icon-height-hovered;
+      left: -$map-marker-left-hover;
+    }
+  }
+
+  @keyframes marker-hover-height {
+    from {
+      height: $icon-height;
+    }
+    to {
+      height: $icon-height-hovered;
+    }
+  }
+
+  @keyframes marker-hover-text {
+    from {
+      font-size: $map-marker-text;
+    }
+    to {
+      font-size: $map-marker-text-hover;
     }
   }
 }
