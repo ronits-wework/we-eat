@@ -51,6 +51,8 @@ export default class RestaurantsApp extends React.Component {
             addRestModalIsOpen: false,
         };
 
+        this.loadPromise = null;
+
         this.searchRestaurantUpdated = this.searchRestaurantUpdated.bind(this);
         this.cuisineTypeFiltered = this.cuisineTypeFiltered.bind(this);
         this.maxSpeedFiltered = this.maxSpeedFiltered.bind(this);
@@ -63,6 +65,7 @@ export default class RestaurantsApp extends React.Component {
         this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
         this.maxSpeedChanged = this.maxSpeedChanged.bind(this);
+        this.loadGoogleMap = this.loadGoogleMap.bind(this);
     }
 
     static get deliveryTimes() {
@@ -78,6 +81,46 @@ export default class RestaurantsApp extends React.Component {
     componentDidMount() {
         this.fetchRestaurants();
         this.fetchCuisineTypes();
+
+        this.loadGoogleMap();
+    }
+
+    loadGoogleMap() {
+        // Asynchronously load the Google Maps script, passing in the callback reference
+        return this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&callback=_$_google_map_initialize_$_')
+    }
+
+    loadJS(src) {
+        if (this.loadPromise) {
+            return this.loadPromise;
+        }
+
+        var ref = window.document.getElementsByTagName("script")[0];
+        var script = window.document.createElement("script");
+        script.src = src;
+        script.async = true;
+        ref.parentNode.insertBefore(script, ref);
+        this.loadPromise = new Promise((resolve, reject) => {
+
+            if (window.google && window.google.maps) {
+                resolve(window.google.maps);
+                return;
+            }
+
+            if (typeof window._$_google_map_initialize_$_ !== 'undefined') {
+                reject(new Error('google map initialization error'));
+            }
+
+            script.onerror = () => {
+                reject(new Error('google map initialization error'));
+            };
+
+            window._$_google_map_initialize_$_ = () => {
+                delete window._$_google_map_initialize_$_;
+                resolve(window.google.maps);
+            };
+        });
+        return this.loadPromise;
     }
 
 
@@ -309,6 +352,7 @@ export default class RestaurantsApp extends React.Component {
                                 return true;
                             })}
                             onRestaurantsChange={this.onRestaurantsChange}
+                            googleMapLoader={this.loadGoogleMap}
                         />
                     </div>
                 </div>

@@ -25,7 +25,7 @@ class AddressInput extends React.Component {
 
         const myStyles = {
             input: { padding: 0 },
-            root: { 'margin-bottom': '10px' },
+            root: { marginBottom: '10px' },
         }
 
         return (

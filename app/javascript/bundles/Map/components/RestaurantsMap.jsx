@@ -9,6 +9,7 @@ export default class RestaurantsMap extends React.Component {
         zoom: PropTypes.number,
         restaurants: PropTypes.array,
         onRestaurantsChange: PropTypes.func.isRequired,
+        googleMapLoader: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
@@ -23,8 +24,6 @@ export default class RestaurantsMap extends React.Component {
             center: [32.078668, 34.781235],
             initDefaultCenter: false,
         }
-
-        this.loadPromise = null;
     }
 
 
@@ -39,44 +38,6 @@ export default class RestaurantsMap extends React.Component {
         }
     }
 
-    loadGoogleMap() {
-        // Asynchronously load the Google Maps script, passing in the callback reference
-        return this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&callback=_$_google_map_initialize_$_')
-    }
-
-    loadJS(src) {
-        if (this.loadPromise) {
-            return this.loadPromise;
-        }
-
-        var ref = window.document.getElementsByTagName("script")[0];
-        var script = window.document.createElement("script");
-        script.src = src;
-        script.async = true;
-        ref.parentNode.insertBefore(script, ref);
-        this.loadPromise = new Promise((resolve, reject) => {
-
-            if (window.google && window.google.maps) {
-                resolve(window.google.maps);
-                return;
-            }
-
-            if (typeof window._$_google_map_initialize_$_ !== 'undefined') {
-                reject(new Error('google map initialization error'));
-            }
-
-            script.onerror = () => {
-                reject(new Error('google map initialization error'));
-            };
-
-            window._$_google_map_initialize_$_ = () => {
-                delete window._$_google_map_initialize_$_;
-                resolve(window.google.maps);
-            };
-        });
-        return this.loadPromise;
-    }
-
 
     render() {
         return (
@@ -86,7 +47,7 @@ export default class RestaurantsMap extends React.Component {
                 libraries
                 center={this.state.center}
                 zoom={this.props.zoom}
-                googleMapLoader={this.loadGoogleMap.bind(this)}
+                googleMapLoader={this.props.googleMapLoader}
             >
                 {this.props.restaurants.map((restaurant) => {
                     return (<RestaurantMapMarker
