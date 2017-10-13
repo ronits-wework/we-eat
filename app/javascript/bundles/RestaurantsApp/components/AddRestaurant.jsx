@@ -4,6 +4,7 @@ import Formsy from 'formsy-react';
 import TextInput from '../../Forms/components/TextInput';
 import DropdownInput from '../../Forms/components/DropdownInput';
 import CheckboxInput from '../../Forms/components/CheckboxInput';
+import AddressInput, {getCoordinates} from '../../Forms/components/AddressInput';
 import cx from 'classnames';
 
 
@@ -33,6 +34,7 @@ export default class AddRestaurantForm extends React.Component {
         deliveryTimes: PropTypes.array.isRequired,
     };
 
+
     setValid() {
         this.setState({
             isFormValid: true
@@ -49,30 +51,37 @@ export default class AddRestaurantForm extends React.Component {
         this.setState({isFormSubmitted: true});
         if (this.state.isFormValid) {
             this.setState({isSubmitting: true});
-            const restaurant = {
-                restaurant: {
-                    name: model.restaurantName,
-                    speed: model.speed ? model.speed.value : null,
-                    cuisine_types: model.cuisineType ? model.cuisineType.map((cuisine) => cuisine.value) : [],
-                    accepts_10bis: model.accepts10bis || false,
-                    kosher: model.isKosher || false,
-                }
-            };
-
-            const data = JSON.stringify(restaurant);
             const {
                 onAdd,
                 onClose
             } = this.props;
+            getCoordinates(model.address)
+                .then((coords) => {
 
-            fetch("/restaurants",
-                {
-                    method: "POST",
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json'
-                    },
+                    const restaurant = {
+                        restaurant: {
+                            name: model.restaurantName,
+                            speed: model.speed ? model.speed.value : null,
+                            cuisine_types: model.cuisineType ? model.cuisineType.map((cuisine) => cuisine.value) : [],
+                            address: model.address,
+                            longitude: coords ? coords.longitude : null,
+                            latitude: coords ? coords.latitude : null,
+                            accepts_10bis: model.accepts10bis || false,
+                            kosher: model.isKosher || false,
+                        }
+                    };
+
+                    const data = JSON.stringify(restaurant);
+
+                    return fetch("/restaurants",
+                        {
+                            method: "POST",
+                            body: data,
+                            headers: {
+                                'Accept': 'application/json, text/plain, */*',
+                                'Content-Type': 'application/json'
+                            },
+                        })
                 })
                 .then(function (response) {
                     onAdd();
@@ -119,6 +128,10 @@ export default class AddRestaurantForm extends React.Component {
                             name="speed"
                             label="Delivery time (minutes)"
                             options={this.props.deliveryTimes}
+                        />
+                        <AddressInput
+                            name="address"
+                            label="Address"
                         />
                         <CheckboxInput
                             name="accepts10bis"
