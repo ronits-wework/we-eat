@@ -78,7 +78,8 @@ export default class AddReviewForm extends React.Component {
     render() {
         const formClass = cx('form', {
             'submitted': this.state.isFormSubmitted,
-            'not-submitted': !this.state.isFormSubmitted
+            'not-submitted': !this.state.isFormSubmitted,
+            'wait': this.state.isSubmitting,
         });
         return (
             <div className="add-review custom-form">

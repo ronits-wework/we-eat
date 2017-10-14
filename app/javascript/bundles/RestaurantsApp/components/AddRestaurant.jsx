@@ -97,7 +97,8 @@ export default class AddRestaurantForm extends React.Component {
     render() {
         const formClass = cx('form', {
             'submitted': this.state.isFormSubmitted,
-            'not-submitted': !this.state.isFormSubmitted
+            'not-submitted': !this.state.isFormSubmitted,
+            'wait': this.state.isSubmitting,
         });
         return (
             <div className="add-restaurant custom-form">
