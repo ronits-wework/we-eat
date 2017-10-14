@@ -38,7 +38,6 @@ export default class RestaurantMapMarker extends React.Component {
 
     render() {
         const markerClass = cx('map-marker', {
-            'hovered': this.state.isHovered,
             'selected': this.props.isSelected,
         });
         return (

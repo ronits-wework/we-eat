@@ -37,7 +37,7 @@ $hover-animation-duration: 100ms;
     @include hover-animation();
   }
 
-  &.hovered, &.selected {
+  &:hover, &.selected {
     top: -$icon-height-hovered;
     left: -$map-marker-left-hover;
     z-index: 1;
@@ -58,6 +58,8 @@ $hover-animation-duration: 100ms;
 
 
   .map-marker-tooltip {
+    padding-left: 8px;
+    padding-right: 8px;
     pointer-events: auto !important;
     &:hover {
       visibility: visible !important;
