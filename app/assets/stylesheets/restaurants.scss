@@ -12,5 +12,11 @@
   .restaurant-card-wrapper {
     margin: 10px;
     display: inline-flex;
+
+    &:hover {
+      .restaurant-card {
+        background-color: rgb(240, 240, 240);
+      }
+    }
   }
 }

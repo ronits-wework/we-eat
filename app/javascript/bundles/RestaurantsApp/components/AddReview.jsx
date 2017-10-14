@@ -102,6 +102,7 @@ export default class AddReviewForm extends React.Component {
                             onRating={(rating) => {
                                 this.setState({userRating: rating})
                             }}
+                            rating={this.state.userRating}
                         />
                     </div>
                     <div className="footer">
