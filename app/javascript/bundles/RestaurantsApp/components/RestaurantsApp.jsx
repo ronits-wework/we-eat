@@ -49,6 +49,8 @@ export default class RestaurantsApp extends React.Component {
             is10bisFilter: false,
             isKosherFilter: false,
             addRestModalIsOpen: false,
+            selectedRestaurant: null,
+            centerRestaurant: null,
         };
 
         this.loadPromise = null;
@@ -66,6 +68,9 @@ export default class RestaurantsApp extends React.Component {
         this.clearFilters = this.clearFilters.bind(this);
         this.maxSpeedChanged = this.maxSpeedChanged.bind(this);
         this.loadGoogleMap = this.loadGoogleMap.bind(this);
+        this.onRestaurantClick = this.onRestaurantClick.bind(this);
+        this.onRestaurantEnter = this.onRestaurantEnter.bind(this);
+        this.onRestaurantLeave = this.onRestaurantLeave.bind(this);
     }
 
     static get deliveryTimes() {
@@ -139,6 +144,18 @@ export default class RestaurantsApp extends React.Component {
 
     onRestaurantsChange() {
         this.fetchRestaurants();
+    }
+
+    onRestaurantClick(restaurant) {
+        this.setState({centerRestaurant: restaurant});
+    }
+
+    onRestaurantEnter(restaurant) {
+        this.setState({selectedRestaurant: restaurant});
+    }
+
+    onRestaurantLeave(restaurant) {
+        this.setState({selectedRestaurant: null});
     }
 
     fetchRestaurants() {
@@ -341,6 +358,9 @@ export default class RestaurantsApp extends React.Component {
                         <Restaurants
                             restaurants={this.state.displayedRestaurants}
                             onRestaurantsChange={this.onRestaurantsChange}
+                            onRestaurantClick={this.onRestaurantClick}
+                            onRestaurantEnter={this.onRestaurantEnter}
+                            onRestaurantLeave={this.onRestaurantLeave}
                         />
                     </div>
                     <div className="map-wrapper">
@@ -353,6 +373,8 @@ export default class RestaurantsApp extends React.Component {
                             })}
                             onRestaurantsChange={this.onRestaurantsChange}
                             googleMapLoader={this.loadGoogleMap}
+                            selectedRestaurant={this.state.selectedRestaurant}
+                            centerRestaurant={this.state.centerRestaurant}
                         />
                     </div>
                 </div>

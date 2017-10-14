@@ -7,7 +7,7 @@ $map-marker-left-hover: 15px;
 $map-marker-text: 16px;
 $map-marker-text-hover: 24px;
 
-$hover-animation-duration: 200ms;
+$hover-animation-duration: 100ms;
 
 @mixin hover-animation() {
   -webkit-transition: $hover-animation-duration; /* Safari */
@@ -37,9 +37,10 @@ $hover-animation-duration: 200ms;
     @include hover-animation();
   }
 
-  &.hovered {
+  &.hovered, &.selected {
     top: -$icon-height-hovered;
     left: -$map-marker-left-hover;
+    z-index: 1;
 
     @include hover-animation();
 

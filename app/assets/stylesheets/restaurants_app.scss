@@ -32,7 +32,8 @@
   }
 
   .restaurant-filters {
-    height: 100px;
+    display: flex;
+    flex-direction: row;
 
     .Select, .slider-wrapper {
       width: 300px;
@@ -64,9 +65,12 @@
   }
 
   .restaurants-wrapper {
-    width: 400px;
+    min-width: 380px;
+    height: 620px;
     margin-top: 20px;
     margin-left: 10px;
+    display: flex;
+    overflow: auto;
   }
 
   .map-wrapper {

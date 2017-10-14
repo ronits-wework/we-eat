@@ -6,14 +6,14 @@ import GoogleMap from 'google-map-react';
 
 export default class RestaurantsMap extends React.Component {
     static propTypes = {
-        zoom: PropTypes.number,
         restaurants: PropTypes.array,
         onRestaurantsChange: PropTypes.func.isRequired,
         googleMapLoader: PropTypes.func.isRequired,
+        selectedRestaurant: PropTypes.object,
+        centerRestaurant: PropTypes.object,
     };
 
     static defaultProps = {
-        zoom: 14,
         restaurants: {},
     };
 
@@ -22,18 +22,27 @@ export default class RestaurantsMap extends React.Component {
 
         this.state = {
             center: [32.078668, 34.781235],
-            initDefaultCenter: false,
+            zoom: 14,
         }
     }
 
 
     componentWillMount() {
-        if (!this.state.initDefaultCenter && navigator.geolocation) {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 this.setState({
                     center: [position.coords.latitude, position.coords.longitude],
-                    initDefaultCenter: true
                 });
+            });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.centerRestaurant !== nextProps.centerRestaurant) {
+            const restaurant = nextProps.centerRestaurant;
+            this.setState({
+                center: [parseFloat(restaurant.latitude), parseFloat(restaurant.longitude)],
+                zoom: 16,
             });
         }
     }
@@ -46,7 +55,7 @@ export default class RestaurantsMap extends React.Component {
                 // apiKey={YOUR_GOOGLE_MAP_API_KEY} // set if you need stats etc ...
                 libraries
                 center={this.state.center}
-                zoom={this.props.zoom}
+                zoom={this.state.zoom}
                 googleMapLoader={this.props.googleMapLoader}
             >
                 {this.props.restaurants.map((restaurant) => {
@@ -56,6 +65,7 @@ export default class RestaurantsMap extends React.Component {
                         lng={restaurant.longitude}
                         text={restaurant.name}
                         restaurant={restaurant}
+                        isSelected={(this.props.selectedRestaurant ? (this.props.selectedRestaurant.id === restaurant.id) : false)}
                         onRestaurantsChange={this.props.onRestaurantsChange}
                     />)
                 })}

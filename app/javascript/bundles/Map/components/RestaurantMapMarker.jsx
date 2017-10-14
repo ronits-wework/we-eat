@@ -10,7 +10,7 @@ export default class RestaurantMapMarker extends React.Component {
 
         this.state = {
             isHovered: false,
-        }
+        };
 
         this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
@@ -20,10 +20,12 @@ export default class RestaurantMapMarker extends React.Component {
         text: PropTypes.string,
         restaurant: PropTypes.object.isRequired,
         onRestaurantsChange: PropTypes.func.isRequired,
+        isSelected: PropTypes.bool,
     };
 
     static defaultProps = {
         text: "",
+        isSelected: false,
     };
 
     onMouseEnter() {
@@ -37,6 +39,7 @@ export default class RestaurantMapMarker extends React.Component {
     render() {
         const markerClass = cx('map-marker', {
             'hovered': this.state.isHovered,
+            'selected': this.props.isSelected,
         });
         return (
             <div className={markerClass}

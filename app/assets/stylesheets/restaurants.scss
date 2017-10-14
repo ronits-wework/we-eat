@@ -3,7 +3,14 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .restaurants {
+
+  display: flex;
+  flex-direction: column;
+  min-height: min-content;
+  width: 360px;
+
   .restaurant-card-wrapper {
     margin: 10px;
+    display: inline-flex;
   }
 }
