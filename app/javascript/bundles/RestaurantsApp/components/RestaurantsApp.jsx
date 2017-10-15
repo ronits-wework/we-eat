@@ -9,6 +9,7 @@ import CheckboxFilter from "../../Filters/components/CheckboxFilter"
 import Modal from 'react-modal';
 import RestaurantsMap from '../../Map/components/RestaurantsMap';
 import cx from 'classnames';
+import LoadGoogleMap from '../../App/services/GoogleMapLoader';
 
 
 const MIN_RESTAURANT_FILTER_LENGTH = 1;
@@ -55,8 +56,6 @@ export default class RestaurantsApp extends React.Component {
             centerRestaurant: null,
         };
 
-        this.loadPromise = null;
-
         this.searchRestaurantUpdated = this.searchRestaurantUpdated.bind(this);
         this.cuisineTypeFiltered = this.cuisineTypeFiltered.bind(this);
         this.maxSpeedFiltered = this.maxSpeedFiltered.bind(this);
@@ -64,11 +63,9 @@ export default class RestaurantsApp extends React.Component {
         this.is10bisFiltered = this.is10bisFiltered.bind(this);
         this.isKosherFiltered = this.isKosherFiltered.bind(this);
         this.openModal = this.openModal.bind(this);
-        this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
-        this.loadGoogleMap = this.loadGoogleMap.bind(this);
         this.onRestaurantClick = this.onRestaurantClick.bind(this);
         this.onRestaurantEnter = this.onRestaurantEnter.bind(this);
         this.onRestaurantLeave = this.onRestaurantLeave.bind(this);
@@ -88,55 +85,11 @@ export default class RestaurantsApp extends React.Component {
         this.fetchRestaurants();
         this.fetchCuisineTypes();
 
-        this.loadGoogleMap();
+        LoadGoogleMap();
     }
-
-    loadGoogleMap() {
-        // Asynchronously load the Google Maps script, passing in the callback reference
-        return this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&callback=_$_google_map_initialize_$_')
-    }
-
-    loadJS(src) {
-        if (this.loadPromise) {
-            return this.loadPromise;
-        }
-
-        var ref = window.document.getElementsByTagName("script")[0];
-        var script = window.document.createElement("script");
-        script.src = src;
-        script.async = true;
-        ref.parentNode.insertBefore(script, ref);
-        this.loadPromise = new Promise((resolve, reject) => {
-
-            if (window.google && window.google.maps) {
-                resolve(window.google.maps);
-                return;
-            }
-
-            if (typeof window._$_google_map_initialize_$_ !== 'undefined') {
-                reject(new Error('google map initialization error'));
-            }
-
-            script.onerror = () => {
-                reject(new Error('google map initialization error'));
-            };
-
-            window._$_google_map_initialize_$_ = () => {
-                delete window._$_google_map_initialize_$_;
-                resolve(window.google.maps);
-            };
-        });
-        return this.loadPromise;
-    }
-
 
     openModal() {
         this.setState({addRestModalIsOpen: true});
-    }
-
-    afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        //this.subtitle.style.color = '#f00';
     }
 
     closeModal() {
@@ -391,7 +344,7 @@ export default class RestaurantsApp extends React.Component {
                                 return true;
                             })}
                             onRestaurantsChange={this.onRestaurantsChange}
-                            googleMapLoader={this.loadGoogleMap}
+                            googleMapLoader={LoadGoogleMap}
                             selectedRestaurant={this.state.selectedRestaurant}
                             centerRestaurant={this.state.centerRestaurant}
                         />
