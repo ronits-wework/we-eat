@@ -14,6 +14,10 @@
   .bottom-part {
     display: flex;
     flex-direction: row;
+    margin-top: 20px;
+    border-top: #1f6730 solid thin;
+    border-bottom: #1f6730 solid thin;
+    height: 600px;
   }
 
   .search-restaurants-wrapper {
@@ -66,8 +70,6 @@
 
   .restaurants-wrapper {
     min-width: 380px;
-    height: 620px;
-    margin-top: 20px;
     margin-left: 10px;
     display: flex;
     overflow: auto;
@@ -75,8 +77,7 @@
 
   .map-wrapper {
     width: 100%;
-    height: 600px;
-    margin: 30px;
+    margin: 0 30px 0 30px;
   }
 
   .add-restaurant-btn {
