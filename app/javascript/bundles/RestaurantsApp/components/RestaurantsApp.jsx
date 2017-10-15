@@ -56,19 +56,6 @@ export default class RestaurantsApp extends React.Component {
             centerRestaurant: null,
         };
 
-        this.searchRestaurantUpdated = this.searchRestaurantUpdated.bind(this);
-        this.cuisineTypeFiltered = this.cuisineTypeFiltered.bind(this);
-        this.maxSpeedFiltered = this.maxSpeedFiltered.bind(this);
-        this.minRatingFiltered = this.minRatingFiltered.bind(this);
-        this.is10bisFiltered = this.is10bisFiltered.bind(this);
-        this.isKosherFiltered = this.isKosherFiltered.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
-        this.clearFilters = this.clearFilters.bind(this);
-        this.onRestaurantClick = this.onRestaurantClick.bind(this);
-        this.onRestaurantEnter = this.onRestaurantEnter.bind(this);
-        this.onRestaurantLeave = this.onRestaurantLeave.bind(this);
     }
 
     static get deliveryTimes() {
@@ -88,29 +75,29 @@ export default class RestaurantsApp extends React.Component {
         LoadGoogleMap();
     }
 
-    openModal() {
+    openModal = () => {
         this.setState({addRestModalIsOpen: true});
-    }
+    };
 
-    closeModal() {
+    closeModal = () => {
         this.setState({addRestModalIsOpen: false});
-    }
+    };
 
-    onRestaurantsChange() {
+    onRestaurantsChange = () => {
         this.fetchRestaurants();
-    }
+    };
 
-    onRestaurantClick(restaurant) {
+    onRestaurantClick = (restaurant) => {
         this.setState({centerRestaurant: restaurant});
-    }
+    };
 
-    onRestaurantEnter(restaurant) {
+    onRestaurantEnter = (restaurant) => {
         this.setState({selectedRestaurant: restaurant});
-    }
+    };
 
-    onRestaurantLeave(restaurant) {
+    onRestaurantLeave = (restaurant) => {
         this.setState({selectedRestaurant: null});
-    }
+    };
 
     fetchRestaurants() {
         fetch("/restaurants.json")
@@ -135,7 +122,7 @@ export default class RestaurantsApp extends React.Component {
     }
 
 
-    clearFilters() {
+    clearFilters = () => {
         if (this.state.filtersApplied) {
             this.setState({
                 restaurantFilter: "",
@@ -146,7 +133,7 @@ export default class RestaurantsApp extends React.Component {
                 isKosherFilter: false
             }, this.filterRestaurants);
         }
-    }
+    };
 
     areFiltersApplied() {
         const noFilters = (
@@ -161,29 +148,29 @@ export default class RestaurantsApp extends React.Component {
         return !noFilters;
     }
 
-    searchRestaurantUpdated(term) {
+    searchRestaurantUpdated = (term) => {
         this.setState({restaurantFilter: term}, this.filterRestaurants);
-    }
+    };
 
-    cuisineTypeFiltered(cuisine) {
+    cuisineTypeFiltered = (cuisine) => {
         this.setState({cuisineTypeFilter: cuisine}, this.filterRestaurants);
-    }
+    };
 
-    maxSpeedFiltered(time) {
+    maxSpeedFiltered = (time) => {
         this.setState({maxSpeed: time}, this.filterRestaurants);
-    }
+    };
 
-    minRatingFiltered(minRating) {
+    minRatingFiltered = (minRating) => {
         this.setState({minRating: minRating}, this.filterRestaurants);
-    }
+    };
 
-    is10bisFiltered(event) {
+    is10bisFiltered = (event) => {
         this.setState({is10bisFilter: event.target.checked}, this.filterRestaurants);
-    }
+    };
 
-    isKosherFiltered(event) {
+    isKosherFiltered = (event) => {
         this.setState({isKosherFilter: event.target.checked}, this.filterRestaurants);
-    }
+    };
 
     filterRestaurants() {
         let restaurants = this.state.restaurants.slice();
