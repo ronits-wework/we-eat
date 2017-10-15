@@ -12,9 +12,17 @@ import cx from 'classnames';
 import LoadGoogleMap from '../../App/services/GoogleMapLoader';
 
 
-const MIN_RESTAURANT_FILTER_LENGTH = 1;
 const MAX_DELIVERY_TIME = 120;
 const DELIVERY_INTERVAL = 15;
+
+const restaurantFilters = Object.freeze({
+    RESTAURANT_NAME: Symbol("restaurantName"),
+    MIN_RATING: Symbol("minRating"),
+    CUISINE_TYPE: Symbol("cuisineType"),
+    MAX_SPEED: Symbol("maxSpeed"),
+    IS_10_BIS: Symbol("is10Bis"),
+    IS_KOSHER: Symbol("isKosher"),
+});
 
 const customStyles = {
     content: {
@@ -29,6 +37,200 @@ const customStyles = {
     }
 };
 
+class RestaurantFilter {
+    constructor() {
+        this.filterType = null;
+    }
+
+    isFilterApplied(value) {
+        return value !== null;
+    }
+
+    get defaultValue() {
+        return null;
+    }
+
+    getFilterType() {
+        return this.filterType;
+    }
+
+    filter(restaurants) {
+        return restaurants;
+    }
+}
+
+class RestaurantNameFilter extends RestaurantFilter {
+    constructor() {
+        super();
+        this.filterType = restaurantFilters.RESTAURANT_NAME;
+    }
+
+    isFilterApplied(value) {
+        return value !== null && value.length > 0;
+    }
+
+    get defaultValue() {
+        return "";
+    }
+
+    filter(restaurants, value) {
+        if (this.isFilterApplied(value)) {
+            const lValue = value.toLowerCase();
+            restaurants = restaurants.filter((restaurant) => {
+                return (restaurant.name.toLowerCase().indexOf(lValue) >= 0);
+            });
+        }
+        return restaurants;
+    }
+}
+
+
+class MinRatingFilter extends RestaurantFilter {
+    constructor() {
+        super();
+        this.filterType = restaurantFilters.MIN_RATING;
+    }
+
+    isFilterApplied(value) {
+        return value !== null && value > 0;
+    }
+
+    get defaultValue() {
+        return null;
+    }
+
+    filter(restaurants, value) {
+        if (this.isFilterApplied(value)) {
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.rating >= value;
+            });
+        }
+        return restaurants;
+    }
+}
+
+class CuisineTypeFilter extends RestaurantFilter {
+    constructor() {
+        super();
+        this.filterType = restaurantFilters.CUISINE_TYPE;
+    }
+
+    isFilterApplied(value) {
+        return value !== null && value.label.length > 0;
+    }
+
+    get defaultValue() {
+        return null;
+    }
+
+    filter(restaurants, value) {
+        if (this.isFilterApplied(value)) {
+            const currCuisineId = value.value;
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.cuisine_types.filter((cuisine) => {
+                    return cuisine.id === currCuisineId;
+                }).length > 0;
+            });
+        }
+        return restaurants;
+    }
+}
+
+class MaxSpeedFilter extends RestaurantFilter {
+    constructor() {
+        super();
+        this.filterType = restaurantFilters.MAX_SPEED;
+    }
+
+    isFilterApplied(value) {
+        return value !== null && value > 0;
+    }
+
+    get defaultValue() {
+        return 0;
+    }
+
+    filter(restaurants, value) {
+        if (this.isFilterApplied(value)) {
+            const currMaxSpeed = value;
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.speed !== null && restaurant.speed <= currMaxSpeed;
+            });
+        }
+        return restaurants;
+    }
+}
+
+class Is10BisFilter extends RestaurantFilter {
+    constructor() {
+        super();
+        this.filterType = restaurantFilters.IS_10_BIS;
+    }
+
+    isFilterApplied(value) {
+        return (value === true);
+    }
+
+    get defaultValue() {
+        return false;
+    }
+
+    filter(restaurants, value) {
+        if (this.isFilterApplied(value)) {
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.accepts_10bis;
+            });
+        }
+        return restaurants;
+    }
+}
+
+class IsKosherFilter extends RestaurantFilter {
+    constructor() {
+        super();
+        this.filterType = restaurantFilters.IS_KOSHER;
+    }
+
+    isFilterApplied(value) {
+        return (value === true);
+    }
+
+    get defaultValue() {
+        return false;
+    }
+
+    filter(restaurants, value) {
+        if (this.isFilterApplied(value)) {
+            restaurants = restaurants.filter((restaurant) => {
+                return restaurant.kosher;
+            });
+        }
+        return restaurants;
+    }
+}
+
+function RestaurantFilterFactory(filterType) {
+    switch(filterType) {
+        case restaurantFilters.RESTAURANT_NAME:
+            return new RestaurantNameFilter();
+            break;
+        case restaurantFilters.MIN_RATING:
+            return new MinRatingFilter();
+            break;
+        case restaurantFilters.CUISINE_TYPE:
+            return new CuisineTypeFilter();
+            break;
+        case restaurantFilters.MAX_SPEED:
+            return new MaxSpeedFilter();
+            break;
+        case restaurantFilters.IS_10_BIS:
+            return new Is10BisFilter();
+            break;
+        case restaurantFilters.IS_KOSHER:
+            return new IsKosherFilter();
+            break;
+    }
+}
 
 export const MAX_RESTAURANT_RATING = 3;
 
@@ -40,20 +242,29 @@ export default class RestaurantsApp extends React.Component {
     constructor(props) {
         super(props);
 
+        this.filters = {};
+        this.defaultFilterValues = {};
+        Object.keys(restaurantFilters).forEach((key) => {
+            const filterType = restaurantFilters[key];
+            const filter = RestaurantFilterFactory(filterType);
+            this.filters[filterType] = filter;
+            this.defaultFilterValues[filterType] = filter.defaultValue;
+        });
+
+        let filterValues = {};
+        Object.keys(restaurantFilters).forEach((key) => {
+            const filterType = restaurantFilters[key];
+            filterValues[filterType] = this.defaultFilterValues[filterType];
+        });
+
         this.state = {
             restaurants: [],
             displayedRestaurants: [],
             cuisineTypes: [],
-            restaurantFilter: "",
-            minRating: null,
-            cuisineTypeFilter: null,
-            maxSpeed: 0,
-            is10bisFilter: false,
-            isKosherFilter: false,
-            filtersApplied: false,
             addRestModalIsOpen: false,
             selectedRestaurant: null,
             centerRestaurant: null,
+            filterValues: filterValues,
         };
 
     }
@@ -123,109 +334,43 @@ export default class RestaurantsApp extends React.Component {
 
 
     clearFilters = () => {
-        if (this.state.filtersApplied) {
-            this.setState({
-                restaurantFilter: "",
-                minRating: null,
-                cuisineTypeFilter: null,
-                maxSpeed: 0,
-                is10bisFilter: false,
-                isKosherFilter: false
-            }, this.filterRestaurants);
-        }
+        this.setState({filterValues: this.defaultFilterValues}, this.filterRestaurants);
     };
 
     areFiltersApplied() {
-        const noFilters = (
-            (this.state.restaurantFilter === null || this.state.restaurantFilter.length === 0) &&
-            (this.state.minRating === null || this.state.minRating === 0) &&
-            (this.state.cuisineTypeFilter === null || this.state.cuisineTypeFilter.length === 0) &&
-            (this.state.maxSpeed === 0) &&
-            (!this.state.is10bisFilter) &&
-            (!this.state.isKosherFilter)
-        );
-
-        return !noFilters;
+        const keys = Object.keys(restaurantFilters);
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            const filterType = restaurantFilters[key];
+            const filterValue = this.state.filterValues[filterType];
+            const filter = this.filters[filterType];
+            if (filter.isFilterApplied(filterValue)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    searchRestaurantUpdated = (term) => {
-        this.setState({restaurantFilter: term}, this.filterRestaurants);
-    };
-
-    cuisineTypeFiltered = (cuisine) => {
-        this.setState({cuisineTypeFilter: cuisine}, this.filterRestaurants);
-    };
-
-    maxSpeedFiltered = (time) => {
-        this.setState({maxSpeed: time}, this.filterRestaurants);
-    };
-
-    minRatingFiltered = (minRating) => {
-        this.setState({minRating: minRating}, this.filterRestaurants);
-    };
-
-    is10bisFiltered = (event) => {
-        this.setState({is10bisFilter: event.target.checked}, this.filterRestaurants);
-    };
-
-    isKosherFiltered = (event) => {
-        this.setState({isKosherFilter: event.target.checked}, this.filterRestaurants);
+    filterChanged = (filterType, value) => {
+        let filterValues = {};
+        Object.keys(restaurantFilters).forEach((key) => {
+            const filterType = restaurantFilters[key];
+            filterValues[filterType] = this.state.filterValues[filterType];
+        });
+        filterValues[filterType] = value;
+        this.setState({filterValues}, this.filterRestaurants);
     };
 
     filterRestaurants() {
         let restaurants = this.state.restaurants.slice();
 
-        // filter by restaurant name
-        if (this.state.restaurantFilter && this.state.restaurantFilter.length >= MIN_RESTAURANT_FILTER_LENGTH) {
-            const restaurantFilter = this.state.restaurantFilter.toLowerCase();
-            restaurants = restaurants.filter((restaurant) => {
-                return (restaurant.name.toLowerCase().indexOf(restaurantFilter) >= 0);
-            });
-        }
-
-        // filter by cuisine type
-        if (this.state.cuisineTypeFilter) {
-            const currCuisineId = this.state.cuisineTypeFilter.value;
-            restaurants = restaurants.filter((restaurant) => {
-                return restaurant.cuisine_types.filter((cuisine) => {
-                    return cuisine.id === currCuisineId;
-                }).length > 0;
-            });
-        }
-
-        // filter by max speed
-        if (this.state.maxSpeed && this.state.maxSpeed > 0) {
-            const currMaxSpeed = this.state.maxSpeed;
-            restaurants = restaurants.filter((restaurant) => {
-                return restaurant.speed !== null && restaurant.speed <= currMaxSpeed;
-            });
-        }
-
-        // filter by min rating
-        if (this.state.minRating > 0) {
-            restaurants = restaurants.filter((restaurant) => {
-                return restaurant.rating >= this.state.minRating;
-            });
-        }
-
-        // filter by 10bis
-        if (this.state.is10bisFilter > 0) {
-            restaurants = restaurants.filter((restaurant) => {
-                return restaurant.accepts_10bis;
-            });
-        }
-
-        // filter by kosher
-        if (this.state.isKosherFilter > 0) {
-            restaurants = restaurants.filter((restaurant) => {
-                return restaurant.kosher;
-            });
-        }
-
-        this.setState({
-            displayedRestaurants: restaurants,
-            filtersApplied: this.areFiltersApplied(),
+        Object.keys(restaurantFilters).forEach((key) => {
+            const filterType = restaurantFilters[key];
+            const filter = this.filters[filterType];
+            restaurants = filter.filter(restaurants, this.state.filterValues[filterType]);
         });
+
+        this.setState({displayedRestaurants: restaurants});
     }
 
 
@@ -233,7 +378,7 @@ export default class RestaurantsApp extends React.Component {
         const sliderTimes = {};
         RestaurantsApp.deliveryTimes.map((time) => sliderTimes[time] = time);
         const clearBtnClass = cx('clear-filters-btn', {
-            'disabled': !this.state.filtersApplied,
+            'disabled': !this.areFiltersApplied(),
         });
         return (
             <div className="restaurants-app">
@@ -243,8 +388,8 @@ export default class RestaurantsApp extends React.Component {
                            className="add-restaurant-btn">+</a>
                         <SearchInput className="search-input"
                                      placeholder="Search restaurants"
-                                     onChange={this.searchRestaurantUpdated}
-                                     value={this.state.restaurantFilter}
+                                     onChange={(value) => this.filterChanged(restaurantFilters.RESTAURANT_NAME, value)}
+                                     value={this.state.filterValues[restaurantFilters.RESTAURANT_NAME]}
                         />
                     </div>
 
@@ -273,11 +418,11 @@ export default class RestaurantsApp extends React.Component {
                 <div className="restaurant-filters">
                     <Select
                         name="cuisine"
-                        value={this.state.cuisineTypeFilter}
+                        value={this.state.filterValues[restaurantFilters.CUISINE_TYPE]}
                         options={this.state.cuisineTypes.map((cuisine) => {
                             return {value: cuisine.id, label: cuisine.cuisine};
                         })}
-                        onChange={this.cuisineTypeFiltered}
+                        onChange={(value) => this.filterChanged(restaurantFilters.CUISINE_TYPE, value)}
                         placeholder="Cuisine"
                     />
                     <div className="slider-wrapper">
@@ -286,24 +431,24 @@ export default class RestaurantsApp extends React.Component {
                                 max={MAX_DELIVERY_TIME}
                                 step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
-                                onChange={this.maxSpeedFiltered}
-                                onAfterChange={this.maxSpeedFiltered}
-                                value={this.state.maxSpeed}
+                                onChange={(value) => this.filterChanged(restaurantFilters.MAX_SPEED, value)}
+                                onAfterChange={(value) => this.filterChanged(restaurantFilters.MAX_SPEED, value)}
+                                value={this.state.filterValues[restaurantFilters.MAX_SPEED]}
                         />
                     </div>
                     <StarsRatingFilter
-                        onRating={this.minRatingFiltered}
-                        rating={this.state.minRating}
+                        onRating={(value) => this.filterChanged(restaurantFilters.MIN_RATING, value)}
+                        rating={this.state.filterValues[restaurantFilters.MIN_RATING]}
                     />
                     <CheckboxFilter
-                        onCheckChange={this.is10bisFiltered}
-                        isChecked={this.state.is10bisFilter}
+                        onCheckChange={(value) => this.filterChanged(restaurantFilters.IS_10_BIS, value.target.checked)}
+                        isChecked={this.state.filterValues[restaurantFilters.IS_10_BIS]}
                         label={"Only 10bis"}
                         inputName={"is10bis"}
                     />
                     <CheckboxFilter
-                        onCheckChange={this.isKosherFiltered}
-                        isChecked={this.state.isKosherFilter}
+                        onCheckChange={(value) => this.filterChanged(restaurantFilters.IS_KOSHER, value.target.checked)}
+                        isChecked={this.state.filterValues[restaurantFilters.IS_KOSHER]}
                         label={"Only kosher"}
                         inputName={"isKosher"}
                     />
