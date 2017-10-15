@@ -1,13 +1,11 @@
 
 .page-header {
-  background-image: url(restaurant_tables.png);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: url(restaurant_tables.png) no-repeat fixed;
   background-size: 100%;
   height: 200px;
   display: flex;
-  align-items: top;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
 
   .app-header {
     text-align: center;
@@ -15,14 +13,14 @@
     font-family: fantasy;
     font-size: 52px;
     font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
     border-radius: 10px;
-    padding: 20px 10px 0px 10px;
   }
 
   h1 {
-    height: 75px;
-    margin-top: 15px;
+    height: 100px;
+    width: 250px;
+    margin-left: 80px;
   }
 }
 
