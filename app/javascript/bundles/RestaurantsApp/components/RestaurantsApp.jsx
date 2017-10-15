@@ -8,6 +8,7 @@ import StarsRatingFilter from "../../StarsRating/components/StarsRatingFilter";
 import CheckboxFilter from "../../Filters/components/CheckboxFilter"
 import Modal from 'react-modal';
 import RestaurantsMap from '../../Map/components/RestaurantsMap';
+import cx from 'classnames';
 
 
 const MIN_RESTAURANT_FILTER_LENGTH = 1;
@@ -48,6 +49,7 @@ export default class RestaurantsApp extends React.Component {
             maxSpeed: 0,
             is10bisFilter: false,
             isKosherFilter: false,
+            filtersApplied: false,
             addRestModalIsOpen: false,
             selectedRestaurant: null,
             centerRestaurant: null,
@@ -66,7 +68,6 @@ export default class RestaurantsApp extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.onRestaurantsChange = this.onRestaurantsChange.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
-        this.maxSpeedChanged = this.maxSpeedChanged.bind(this);
         this.loadGoogleMap = this.loadGoogleMap.bind(this);
         this.onRestaurantClick = this.onRestaurantClick.bind(this);
         this.onRestaurantEnter = this.onRestaurantEnter.bind(this);
@@ -180,19 +181,31 @@ export default class RestaurantsApp extends React.Component {
         });
     }
 
-    maxSpeedChanged (speed) {
-        this.setState({maxSpeed: speed});
-    }
 
     clearFilters() {
-        this.setState({
-            restaurantFilter: "",
-            minRating: null,
-            cuisineTypeFilter: null,
-            maxSpeed: 0,
-            is10bisFilter: false,
-            isKosherFilter: false
-        }, this.filterRestaurants);
+        if (this.state.filtersApplied) {
+            this.setState({
+                restaurantFilter: "",
+                minRating: null,
+                cuisineTypeFilter: null,
+                maxSpeed: 0,
+                is10bisFilter: false,
+                isKosherFilter: false
+            }, this.filterRestaurants);
+        }
+    }
+
+    areFiltersApplied() {
+        const noFilters = (
+            (this.state.restaurantFilter === null || this.state.restaurantFilter.length === 0) &&
+            (this.state.minRating === null || this.state.minRating === 0) &&
+            (this.state.cuisineTypeFilter === null || this.state.cuisineTypeFilter.length === 0) &&
+            (this.state.maxSpeed === 0) &&
+            (!this.state.is10bisFilter) &&
+            (!this.state.isKosherFilter)
+        );
+
+        return !noFilters;
     }
 
     searchRestaurantUpdated(term) {
@@ -269,13 +282,19 @@ export default class RestaurantsApp extends React.Component {
             });
         }
 
-        this.setState({displayedRestaurants: restaurants});
+        this.setState({
+            displayedRestaurants: restaurants,
+            filtersApplied: this.areFiltersApplied(),
+        });
     }
 
 
     render() {
         const sliderTimes = {};
         RestaurantsApp.deliveryTimes.map((time) => sliderTimes[time] = time);
+        const clearBtnClass = cx('clear-filters-btn', {
+            'disabled': !this.state.filtersApplied,
+        });
         return (
             <div className="restaurants-app">
                 <div className="top-part">
@@ -286,10 +305,6 @@ export default class RestaurantsApp extends React.Component {
                                      placeholder="Search restaurants"
                                      onChange={this.searchRestaurantUpdated}
                                      value={this.state.restaurantFilter}
-                        />
-                        <img
-                            className="clear-filters-btn"
-                            onClick={this.clearFilters}
                         />
                     </div>
 
@@ -331,7 +346,7 @@ export default class RestaurantsApp extends React.Component {
                                 max={MAX_DELIVERY_TIME}
                                 step={DELIVERY_INTERVAL}
                                 marks={sliderTimes}
-                                onChange={this.maxSpeedChanged}
+                                onChange={this.maxSpeedFiltered}
                                 onAfterChange={this.maxSpeedFiltered}
                                 value={this.state.maxSpeed}
                         />
@@ -351,6 +366,10 @@ export default class RestaurantsApp extends React.Component {
                         isChecked={this.state.isKosherFilter}
                         label={"Only kosher"}
                         inputName={"isKosher"}
+                    />
+                    <img
+                        className={clearBtnClass}
+                        onClick={this.clearFilters}
                     />
                 </div>
                 <div className="bottom-part">
