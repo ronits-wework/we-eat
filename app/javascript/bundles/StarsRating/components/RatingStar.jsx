@@ -2,9 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class RatingStar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     static propTypes = {
         starClass: PropTypes.string,

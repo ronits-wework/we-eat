@@ -43,6 +43,8 @@ export default class StarsRating extends React.Component {
         interactiveRating: true,
         rating: 0,
         numStars: DEFAULT_STAR_NUM,
+        onRating: () => {
+        },
     };
 
 
@@ -77,9 +79,7 @@ export default class StarsRating extends React.Component {
             rating: newRating,
             isHoverMode: false
         });
-        if (this.props.onRating) {
-            this.props.onRating(newRating);
-        }
+        this.props.onRating(newRating);
     }
 
     handleStarMouseEnter(i) {
@@ -101,9 +101,7 @@ export default class StarsRating extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.rating != this.state.rating) {
             this.setState({rating: nextProps.rating});
-            if (this.props.onRating) {
-                this.props.onRating(nextProps.rating);
-            }
+            this.props.onRating(nextProps.rating);
         }
     }
 

@@ -18,12 +18,10 @@ namespace :import_restaurants_csv do
         cuisine = CuisineType.find_by_cuisine(row[:cuisine])
         RestaurantCuisine.create!(cuisine_type_id: cuisine.id, restaurant_id: restaurant.id)
 
-        @reviews_num = Faker::Number.between(0, 5)
-        @i = 0
-        while @i < @reviews_num do
-          Review.create!(name: Faker::Name.name, rating: Faker::Number.between(0, 3),
+        @reviews_num = Random.rand(5)
+        @reviews_num.times do
+          Review.create!(name: Faker::Name.name, rating: Random.rand(3),
                          comment: Faker::Lorem.sentence, restaurant_id: restaurant.id);
-          @i += 1
         end
       end
     end

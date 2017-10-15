@@ -50,11 +50,11 @@ export default class AddRestaurantForm extends React.Component {
     submit(model) {
         this.setState({isFormSubmitted: true});
         if (this.state.isFormValid) {
-            this.setState({isSubmitting: true});
             const {
                 onAdd,
                 onClose
             } = this.props;
+            this.setState({isSubmitting: true});
             getCoordinates(model.address)
                 .then((coords) => {
 

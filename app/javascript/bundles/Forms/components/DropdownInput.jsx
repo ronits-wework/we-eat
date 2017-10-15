@@ -5,10 +5,6 @@ import PropTypes from 'prop-types';
 
 class DropdownInput extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     static propTypes = {
         options: PropTypes.array.isRequired,
         label: PropTypes.string.isRequired,

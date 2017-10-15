@@ -4,6 +4,10 @@ import RestaurantMapMarker from './RestaurantMapMarker';
 import GoogleMap from 'google-map-react';
 
 
+const INITIAL_ZOOM = 14;
+const SELECTED_ZOOM = 16;
+const DEFAULT_CENTER = [32.078668, 34.781235];
+
 export default class RestaurantsMap extends React.Component {
     static propTypes = {
         restaurants: PropTypes.array,
@@ -21,8 +25,8 @@ export default class RestaurantsMap extends React.Component {
         super(props);
 
         this.state = {
-            center: [32.078668, 34.781235],
-            zoom: 14,
+            center: DEFAULT_CENTER,
+            zoom: INITIAL_ZOOM,
         }
     }
 
@@ -42,7 +46,7 @@ export default class RestaurantsMap extends React.Component {
             const restaurant = nextProps.centerRestaurant;
             this.setState({
                 center: [parseFloat(restaurant.latitude), parseFloat(restaurant.longitude)],
-                zoom: 16,
+                zoom: SELECTED_ZOOM,
             });
         }
     }
@@ -65,7 +69,8 @@ export default class RestaurantsMap extends React.Component {
                         lng={restaurant.longitude}
                         text={restaurant.name}
                         restaurant={restaurant}
-                        isSelected={(this.props.selectedRestaurant ? (this.props.selectedRestaurant.id === restaurant.id) : false)}
+                        isSelected={(this.props.selectedRestaurant ?
+                            (this.props.selectedRestaurant.id === restaurant.id) : false)}
                         onRestaurantsChange={this.props.onRestaurantsChange}
                     />)
                 })}

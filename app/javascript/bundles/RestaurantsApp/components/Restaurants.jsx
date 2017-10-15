@@ -5,13 +5,6 @@ import RestaurantCard from "./RestaurantCard";
 
 export default class Restaurants extends React.Component {
 
-    /**
-     * @param props - Comes from your rails view.
-     */
-    constructor(props) {
-        super(props);
-    }
-
     static propTypes = {
         restaurants: PropTypes.array.isRequired,
         onRestaurantsChange: PropTypes.func.isRequired,

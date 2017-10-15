@@ -5,17 +5,12 @@ import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-auto
 
 class AddressInput extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     static propTypes = {
         label: PropTypes.string.isRequired,
         name: PropTypes.string,
     };
 
     render() {
-        const className = "";
         const errorMessage = this.props.getErrorMessage();
         const inputProps = {
             name: this.props.name,
@@ -29,7 +24,7 @@ class AddressInput extends React.Component {
         }
 
         return (
-            <div className={className}>
+            <div className="text-input">
                 {this.props.label}
                 <PlacesAutocomplete
                     inputProps={inputProps}
