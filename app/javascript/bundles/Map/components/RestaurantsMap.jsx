@@ -43,13 +43,24 @@ export default class RestaurantsMap extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.centerRestaurant !== nextProps.centerRestaurant) {
-            const restaurant = nextProps.centerRestaurant;
+            const restaurant = nextProps.centerRestaurant.restaurant;
             this.setState({
                 center: [parseFloat(restaurant.latitude), parseFloat(restaurant.longitude)],
                 zoom: SELECTED_ZOOM,
             });
         }
     }
+
+    onChange = ({center, zoom, bounds, ...other}) => {
+        let stateToChange = {};
+        if (center.lat !== this.state.center[0] || center.lng !== this.state.center[1]) {
+            stateToChange['center'] = [center.lat, center.lng];
+        }
+        if (zoom !== this.state.zoom) {
+            stateToChange['zoom'] = zoom;
+        }
+        this.setState(stateToChange);
+    };
 
 
     render() {
@@ -61,6 +72,7 @@ export default class RestaurantsMap extends React.Component {
                 center={this.state.center}
                 zoom={this.state.zoom}
                 googleMapLoader={this.props.googleMapLoader}
+                onChange={this.onChange}
             >
                 {this.props.restaurants.map((restaurant) => {
                     return (<RestaurantMapMarker

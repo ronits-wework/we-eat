@@ -99,7 +99,7 @@ export default class RestaurantsApp extends React.Component {
     };
 
     onRestaurantClick = (restaurant) => {
-        this.setState({centerRestaurant: restaurant});
+        this.setState({centerRestaurant: {restaurant}});
     };
 
     onRestaurantEnter = (restaurant) => {
