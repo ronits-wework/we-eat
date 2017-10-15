@@ -4,6 +4,8 @@ import Formsy from 'formsy-react';
 import TextInput from '../../Forms/components/TextInput';
 import DropdownInput from '../../Forms/components/DropdownInput';
 import CheckboxInput from '../../Forms/components/CheckboxInput';
+import AddressInput, {getCoordinates} from '../../Forms/components/AddressInput';
+import cx from 'classnames';
 
 
 Formsy.addValidationRule('minTwoChars', function (values, value) {
@@ -17,6 +19,7 @@ export default class AddRestaurantForm extends React.Component {
         this.state = {
             isFormValid: false,
             isFormSubmitted: false,
+            isSubmitting: false,
         }
         this.submit = this.submit.bind(this);
         this.setValid = this.setValid.bind(this);
@@ -27,14 +30,10 @@ export default class AddRestaurantForm extends React.Component {
     static propTypes = {
         cuisines: PropTypes.array.isRequired,
         onClose: PropTypes.func.isRequired,
+        onAdd: PropTypes.func.isRequired,
         deliveryTimes: PropTypes.array.isRequired,
     };
 
-    getInitialState() {
-        return {
-            isFormValid: false
-        }
-    }
 
     setValid() {
         this.setState({
@@ -51,46 +50,65 @@ export default class AddRestaurantForm extends React.Component {
     submit(model) {
         this.setState({isFormSubmitted: true});
         if (this.state.isFormValid) {
-            const restaurant = {
-                restaurant: {
-                    name: model.restaurantName,
-                    speed: model.speed.value || null,
-                    cuisine_types: model.cuisineType ? [model.cuisineType.value] : [],
-                    accepts_10bis: model.accepts10bis || false,
-                    kosher: model.isKosher || false,
-                }
-            };
+            const {
+                onAdd,
+                onClose
+            } = this.props;
+            this.setState({isSubmitting: true});
+            getCoordinates(model.address)
+                .then((coords) => {
 
-            const data = JSON.stringify(restaurant);
-            const onClose = this.props.onClose;
+                    const restaurant = {
+                        restaurant: {
+                            name: model.restaurantName,
+                            speed: model.speed ? model.speed.value : null,
+                            cuisine_types: model.cuisineType ? model.cuisineType.map((cuisine) => cuisine.value) : [],
+                            address: model.address,
+                            longitude: coords ? coords.longitude : null,
+                            latitude: coords ? coords.latitude : null,
+                            accepts_10bis: model.accepts10bis || false,
+                            kosher: model.isKosher || false,
+                        }
+                    };
 
-            fetch("/restaurants",
-                {
-                    method: "POST",
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json'
-                    },
+                    const data = JSON.stringify(restaurant);
+
+                    return fetch("/restaurants",
+                        {
+                            method: "POST",
+                            body: data,
+                            headers: {
+                                'Accept': 'application/json, text/plain, */*',
+                                'Content-Type': 'application/json'
+                            },
+                        })
                 })
                 .then(function (response) {
+                    onAdd();
                     onClose();
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }
     }
 
     render() {
-        let formClass = this.state.isFormSubmitted ? "submitted" : "not-submitted";
-        formClass += " form";
+        const formClass = cx('form', {
+            'submitted': this.state.isFormSubmitted,
+            'not-submitted': !this.state.isFormSubmitted,
+            'wait': this.state.isSubmitting,
+        });
         return (
             <div className="add-restaurant custom-form">
                 <h3 className="form-header">Add a Restaurant</h3>
-                <Formsy.Form onSubmit={this.submit} onValid={this.setValid} onInvalid={this.setInvalid}
-                             className={formClass}>
+                <Formsy.Form
+                    onSubmit={this.submit}
+                    onValid={this.setValid}
+                    onInvalid={this.setInvalid}
+                    className={formClass}
+                >
                     <div className="form-content">
                         <TextInput
                             name="restaurantName"
@@ -103,13 +121,18 @@ export default class AddRestaurantForm extends React.Component {
                             required/>
                         <DropdownInput
                             name="cuisineType"
-                            label="Choose a Cuisine"
+                            label="Choose Cuisines"
                             options={this.props.cuisines}
+                            multi={true}
                         />
                         <DropdownInput
                             name="speed"
                             label="Delivery time (minutes)"
                             options={this.props.deliveryTimes}
+                        />
+                        <AddressInput
+                            name="address"
+                            label="Address"
                         />
                         <CheckboxInput
                             name="accepts10bis"
@@ -122,7 +145,7 @@ export default class AddRestaurantForm extends React.Component {
                     </div>
                     <div className="footer">
                         <button onClick={this.props.onClose}>Cancel</button>
-                        <button type="submit">Submit</button>
+                        <button type="submit" disabled={this.state.isSubmitting}>Submit</button>
                     </div>
                 </Formsy.Form>
             </div>

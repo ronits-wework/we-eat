@@ -1,41 +1,45 @@
 
+
 .restaurants-app {
 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: -83px;
+
   .top-part {
-    background-image: url(restaurant_tables.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100%;
+    padding: 15px 0 25px 0;
   }
 
-  .app-header {
-    text-align: center;
-    padding: 120px;
-    color: #1f6730;
-    font-family: fantasy;
-    font-size: 52px;
-    font-weight: bold;
+  .bottom-part {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    border-top: #1f6730 solid thin;
+    border-bottom: #1f6730 solid thin;
+    height: 600px;
   }
 
   .search-restaurants-wrapper {
-    padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
     .search-input input {
       width: 300px;
+      margin: 0 30px;
     }
 
   }
 
   .restaurant-filters {
-    height: 100px;
+    display: flex;
+    flex-direction: row;
 
     .Select, .slider-wrapper {
       width: 300px;
-    }
-
-    .stars-rating-filter-wrapper {
-      width: 100px;
     }
 
     .checkbox-wrapper input {
@@ -45,19 +49,38 @@
 
   }
 
+  .clear-filters-btn {
+    height: 30px;
+    width: 30px;
+    content:url(clear_filters.png);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: rgba(200, 200, 200, 0.8);
+    }
+
+    &.disabled {
+      opacity: 0.4;
+    }
+  }
+
   .restaurant-filters > * {
     float: left;
     margin: 20px;
   }
 
   .restaurants-wrapper {
-    float: left;
-    overflow: hidden;
-    width: 400px;
+    min-width: 380px;
+    margin-left: 10px;
+    display: flex;
+    overflow: auto;
   }
 
   .map-wrapper {
-    overflow: hidden;
+    width: 100%;
+    margin: 0 30px 0 30px;
   }
 
   .add-restaurant-btn {
@@ -68,16 +91,12 @@
       background-color: rgba(31, 103, 48, 0.7);
     }
 
-    position: relative;
-    right: 200px;
-    top: 35px;
     font-size: 18px;
 
     border: none;
     display: inline-block;
     outline: 0;
     padding: 8px 16px;
-    vertical-align: middle;
     overflow: hidden;
     text-decoration: none;
     text-align: center;

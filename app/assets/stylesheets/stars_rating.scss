@@ -3,7 +3,8 @@
 
   unicode-bidi: bidi-override;
   color: #c5c5c5;
-  font-size: 25px;
+  font-size: 20px;
+  font-family: Arial, sans-serif;
   height: 25px;
   line-height: 25px;
   position: relative;
@@ -46,8 +47,14 @@
   justify-content: center;
 }
 
-.stars-rating-filter {
-  display: flex;
-  justify-content: space-around;
+.stars-rating-filter-wrapper {
+  width: 100px;
+  margin: auto;
+
+  .stars-rating-filter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 
