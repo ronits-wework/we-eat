@@ -24,7 +24,7 @@ $hover-animation-duration: 100ms;
 
   .marker-icon {
     height: $icon-height;
-    content:url(map_marker.svg);
+    content:image_url("map_marker.svg");
 
     @include hover-animation();
   }
