@@ -1,7 +1,7 @@
 
 export default function LoadGoogleMap() {
     // Asynchronously load the Google Maps script, passing in the callback reference
-    return loadGoogleMapJS('https://maps.googleapis.com/maps/api/js?libraries=places&callback=_$_google_map_initialize_$_')
+    return loadGoogleMapJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCW2E6DiG06OMQH7ENDVLJVb1uwQXuWmaA&libraries=places&callback=_$_google_map_initialize_$_')
 }
 
 let loadPromise = null;
