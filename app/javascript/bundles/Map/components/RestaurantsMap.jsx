@@ -83,7 +83,7 @@ export default class RestaurantsMap extends React.Component {
                         restaurant={restaurant}
                         isSelected={(this.props.selectedRestaurant ?
                             (this.props.selectedRestaurant.id === restaurant.id) : false)}
-                        onRestaurantsChange={this.props.onRestaurantsChange}
+                        onRestaurantsChange={() => this.props.onRestaurantsChange(restaurant.id)}
                     />)
                 })}
             </GoogleMap>
