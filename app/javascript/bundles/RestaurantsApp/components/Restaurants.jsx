@@ -26,7 +26,7 @@ export default class Restaurants extends React.Component {
                 >
                     <RestaurantCard
                         restaurant={restaurant}
-                        onRestaurantChange={this.props.onRestaurantsChange}
+                        onRestaurantChange={() => this.props.onRestaurantsChange(restaurant.id)}
                     />
                 </div>
             )

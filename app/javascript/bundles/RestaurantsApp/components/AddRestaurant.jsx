@@ -83,8 +83,10 @@ export default class AddRestaurantForm extends React.Component {
                             },
                         })
                 })
-                .then(function (response) {
-                    onAdd();
+                .then(function (res) {
+                    const url = res.url.split('/');
+                    const id = url[url.length - 1];
+                    onAdd(id);
                     onClose();
                 })
                 .catch(function (error) {

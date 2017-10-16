@@ -61,7 +61,7 @@ export default class RestaurantMapMarker extends React.Component {
                     {this.props.restaurant && this.state.isHovered && (
                         <RestaurantCard
                             restaurant={this.props.restaurant}
-                            onRestaurantChange={this.props.onRestaurantsChange}
+                            onRestaurantChange={() => this.props.onRestaurantsChange(this.props.restaurant.id)}
                         />
                     )}
                 </ReactTooltip>

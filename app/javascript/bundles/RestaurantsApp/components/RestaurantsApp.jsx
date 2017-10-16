@@ -94,8 +94,13 @@ export default class RestaurantsApp extends React.Component {
         this.setState({addRestModalIsOpen: false});
     };
 
-    onRestaurantsChange = () => {
-        this.fetchRestaurants();
+    onRestaurantsChange = (id) => {
+        if (id) {
+            this.fetchRestaurant(id);
+        }
+        else {
+            this.fetchRestaurants();
+        }
     };
 
     onRestaurantClick = (restaurant) => {
@@ -119,6 +124,30 @@ export default class RestaurantsApp extends React.Component {
                     }, this.filterRestaurants
                 );
             });
+    }
+
+    fetchRestaurant(id) {
+        fetch("/restaurants/" + id + ".json")
+            .then(res => res.json())
+            .then((restaurant) => {
+                let restaurants = this.state.restaurants.slice();
+                let found = false;
+                for (let i = 0; i < restaurants.length; i++) {
+                    if (restaurants[i].id === restaurant.id) {
+                        restaurants[i] = restaurant;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    restaurants.splice(0, 0, restaurant);
+                }
+                this.setState({
+                        restaurants
+                    }, this.filterRestaurants
+                );
+            })
+            .catch(error => console.error(error));
     }
 
     fetchCuisineTypes() {

@@ -4,6 +4,7 @@ import StarsRating from "../../StarsRating/components/StarsRating";
 import {MAX_RESTAURANT_RATING} from './RestaurantsApp'
 import Modal from 'react-modal';
 import AddReviewForm from "./AddReview";
+import CuisineIcon from '../../Cuisines/model/CuisineIcon';
 
 const customStyles = {
     content: {
@@ -29,7 +30,7 @@ export default class RestaurantCard extends React.Component {
         this.state = {
             rateModalIsOpen: false,
             userRating: 0,
-        }
+        };
 
         this.openRateModal = this.openRateModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -58,7 +59,6 @@ export default class RestaurantCard extends React.Component {
     render() {
         const restaurant = this.props.restaurant;
         const cuisineTypes = restaurant.cuisine_types.map((cuisineType) => cuisineType.cuisine);
-        const cuisineStr = cuisineTypes.join(", ");
         return (
             <div key={restaurant.id} className="card restaurant-card">
                 <div className="card-block text-center">
@@ -72,7 +72,17 @@ export default class RestaurantCard extends React.Component {
                             <div className="rest-row">{restaurant.address}</div>
                             {restaurant.speed && (<div>{restaurant.speed} minute delivery</div>)}
                             <div className="rest-row">
-                                {cuisineStr}
+                                {cuisineTypes.map((cuisine) => {
+                                    return (
+                                        <span
+                                            key={cuisine}
+                                            className="cuisine-type"
+                                            title={cuisine}
+                                        >
+                                            {CuisineIcon[cuisine] || cuisine}
+                                        </span>
+                                    );
+                                })}
                             </div>
                             <div className="rest-sub-section">
                                 <div className="rest-sub-item">
