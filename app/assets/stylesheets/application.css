@@ -16,13 +16,13 @@
 
 
 @import "_bootstrap.scss";
+@import "cuisine_types.scss";
 @import "restaurants.scss";
 @import "restaurant_card.scss";
 @import "stars_rating.scss";
 @import "restaurants_app.scss";
 @import "react-select/dist/react-select.css";
 @import "rc-slider/assets/index.css";
-@import "../fonts/cuisine-webfont/stylesheet.scss";
 @import "forms.scss";
 @import "add_restaurant.scss";
 @import "add_review.scss";
