@@ -12,9 +12,8 @@
  *
  *= require_tree .
  *= require_self
+ *= require _bootstrap
+ *= require react-select/dist/react-select
+ *= require rc-slider/assets/index
  */
 
-
-@import "_bootstrap.scss";
-@import "react-select/dist/react-select.css";
-@import "rc-slider/assets/index.css";
