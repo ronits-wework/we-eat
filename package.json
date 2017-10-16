@@ -26,6 +26,10 @@
     "react-tooltip": "^3.3.1",
     "redux": "^3.7.2"
   },
+  "engines": {
+    "yarn": ">= 1.0.2",
+    "node": ">=6.11.1"
+  },
   "devDependencies": {
     "webpack-dev-server": "^2.9.2"
   }
