@@ -16,5 +16,14 @@
 
 
 @import "_bootstrap.scss";
+@import "restaurants";
+@import "restaurant_card";
+@import "stars_rating";
+@import "restaurants_app";
 @import "react-select/dist/react-select.css";
 @import "rc-slider/assets/index.css";
+@import "forms";
+@import "add_restaurant";
+@import "add_review";
+@import "map_marker";
+@import "cuisine_types";
