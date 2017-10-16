@@ -16,7 +16,6 @@
 
 
 @import "_bootstrap.scss";
-@import "cuisine_types.scss";
 @import "restaurants.scss";
 @import "restaurant_card.scss";
 @import "stars_rating.scss";
@@ -27,3 +26,4 @@
 @import "add_restaurant.scss";
 @import "add_review.scss";
 @import "map_marker.scss";
+@import "cuisine_types.scss";
