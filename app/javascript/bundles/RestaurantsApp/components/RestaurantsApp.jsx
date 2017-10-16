@@ -140,7 +140,7 @@ export default class RestaurantsApp extends React.Component {
                     }
                 }
                 if (!found) {
-                    restaurants.push(restaurant);
+                    restaurants.splice(0, 0, restaurant);
                 }
                 this.setState({
                         restaurants
