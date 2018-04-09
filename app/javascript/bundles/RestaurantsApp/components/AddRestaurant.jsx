@@ -14,6 +14,8 @@ Formsy.addValidationRule('minTwoChars', function (values, value) {
 
 
 export default class AddRestaurantForm extends React.Component {
+    const stam = false;
+
     constructor(props) {
         super(props);
         this.state = {
