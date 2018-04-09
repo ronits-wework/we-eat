@@ -27,6 +27,8 @@ export default class AddRestaurantForm extends React.Component {
 
     }
 
+    const stam2 = true;
+
     static propTypes = {
         cuisines: PropTypes.array.isRequired,
         onClose: PropTypes.func.isRequired,
